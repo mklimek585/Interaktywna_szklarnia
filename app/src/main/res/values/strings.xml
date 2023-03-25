@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Interaktywna_szklarnia</string>
+    <string name="choose1">Wybor ustawień</string>
+    <string name="choose2">Tryb reczny</string>
+    <string name="choose3">Statystyki</string>
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+</resources>
