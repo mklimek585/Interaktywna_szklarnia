@@ -14,4 +14,7 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+
+    <string name="register"><u><b><i>Załóż konto</i></b></u></string>
+
 </resources>

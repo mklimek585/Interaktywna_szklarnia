@@ -1,6 +1,8 @@
 package pwr.project.interaktywna_szklarnia
 
 import android.os.Bundle
+import android.view.View
+import android.widget.RadioButton
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -29,7 +31,30 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
             )
         )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.radio_zla ->
+                    if (checked) {
+
+                    }
+                R.id.radio_ok ->
+                    if (checked) {
+
+                    }
+                R.id.radio_dobra ->
+                    if (checked) {
+
+                    }
+            }
+        }
     }
 }
