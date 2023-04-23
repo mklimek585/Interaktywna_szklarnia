@@ -18,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        setupRegisterLink(view)
     }
 
     fun setupRegisterLink(view: View?) {
@@ -25,11 +26,16 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val tvRegister : TextView = binding.tvRegisterLink
+        tvRegister.setOnClickListener() {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
     fun loginMainActivity(view: View) {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        this.finish()
     }
 }

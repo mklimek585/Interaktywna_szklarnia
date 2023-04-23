@@ -10,63 +10,68 @@
 
     <Button
         android:id="@+id/btnLogin"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:onClick="loginMainActivity"
         android:text="Loguj"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:textSize="16sp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673"
-        tools:visibility="visible"
-        android:onClick="loginMainActivity"/>
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/input_bg"
         android:ems="10"
+        android:hint="Username"
         android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_bg"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:textColorHint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:background="@drawable/asd"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView12"
@@ -84,11 +89,9 @@
         android:layout_height="64dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        app:layout_constraintVertical_bias="0.081">
+        app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+        app:layout_constraintStart_toStartOf="@+id/btnLogin"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin">
 
 
         <TextView
@@ -111,8 +114,19 @@
             android:textSize="14dp"
             android:textStyle="bold" />
 
-/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Błędne hasło lub/i nazwa użytkownika"
+        android:textColor="#DA1414"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword"
+        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

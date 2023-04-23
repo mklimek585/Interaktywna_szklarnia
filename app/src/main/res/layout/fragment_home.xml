@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/karolina_grabowska2"
     tools:context=".ui.home.HomeFragment">
 
 
@@ -88,8 +89,8 @@ Nasłonecznienie 6h dziennie"
         android:id="@+id/textView4"
         android:layout_width="108dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginStart="4dp"
+        android:layout_marginTop="40dp"
         android:text="Opcja 1"
         android:textSize="20sp"
         android:textStyle="bold"
