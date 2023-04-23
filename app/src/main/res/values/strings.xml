@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Interaktywna_szklarnia</string>
-    <string name="choose1">Wybor ustawień</string>
-    <string name="choose2">Tryb reczny</string>
-    <string name="choose3">Statystyki</string>
+    <string name="choose1">Home</string>
+    <string name="choose2">Sets</string>
+    <string name="choose3">Stats</string>
+    <string name="choose4">Settings</string>
 
     <string-array name="planets_array">
         <item>Mercury</item>
@@ -16,5 +17,6 @@
     </string-array>
 
     <string name="register"><u><b><i>Załóż konto</i></b></u></string>
+
 
 </resources>

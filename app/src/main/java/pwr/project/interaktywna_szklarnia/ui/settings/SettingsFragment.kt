@@ -1,4 +1,4 @@
-package pwr.project.interaktywna_szklarnia.ui.home
+package pwr.project.interaktywna_szklarnia.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import pwr.project.interaktywna_szklarnia.databinding.FragmentHomeBinding
-import pwr.project.interaktywna_szklarnia.ui.settings.SettingsViewModel
+import pwr.project.interaktywna_szklarnia.databinding.FragmentSettingsBinding
 
 
-class HomeFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentSettingsBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -26,7 +25,7 @@ class HomeFragment : Fragment() {
         val settingsViewModel =
             ViewModelProvider(this).get(SettingsViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 

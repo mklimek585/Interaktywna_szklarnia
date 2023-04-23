@@ -18,8 +18,14 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="pwr.project.interaktywna_szklarnia.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_stats"
+        android:name="pwr.project.interaktywna_szklarnia.ui.stats.StatsFragment"
         android:label="@string/choose3"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_stats" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="pwr.project.interaktywna_szklarnia.ui.settings.SettingsFragment"
+        android:label="@string/choose4"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
