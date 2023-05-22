@@ -39,26 +39,26 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun onRadioButtonClicked(view: View) {
-        if (view is RadioButton) {
-            // Is the button now checked?
-            val checked = view.isChecked
-
-            // Check which radio button was clicked
-            when (view.getId()) {
-                R.id.radio_zla ->
-                    if (checked) {
-
-                    }
-                R.id.radio_ok ->
-                    if (checked) {
-
-                    }
-                R.id.radio_dobra ->
-                    if (checked) {
-
-                    }
-            }
-        }
-    }
+//    fun onRadioButtonClicked(view: View) {
+//        if (view is RadioButton) {
+//            // Is the button now checked?
+//            val checked = view.isChecked
+//
+//            // Check which radio button was clicked
+//            when (view.getId()) {
+//                R.id.radio_zla ->
+//                    if (checked) {
+//
+//                    }
+//                R.id.radio_ok ->
+//                    if (checked) {
+//
+//                    }
+//                R.id.radio_dobra ->
+//                    if (checked) {
+//
+//                    }
+//            }
+//        }
+//    }
 }

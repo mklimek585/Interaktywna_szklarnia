@@ -16,6 +16,7 @@
         android:text="Błędne hasło lub/i nazwa użytkownika"
         android:textColor="#DA1414"
         android:textSize="16sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword2"
         app:layout_constraintStart_toStartOf="@+id/editTextTextPassword2"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
@@ -26,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:onClick="loginMainActivity"
+        android:onClick="registerLoginActivity"
         android:text="Zatwierdź"
         android:textSize="16sp"
         android:visibility="visible"

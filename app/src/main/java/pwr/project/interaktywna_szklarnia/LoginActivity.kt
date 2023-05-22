@@ -32,8 +32,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-
     fun loginMainActivity(view: View) {
+        //TODO logowanie
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         this.finish()
