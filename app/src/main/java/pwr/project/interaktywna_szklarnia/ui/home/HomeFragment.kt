@@ -38,6 +38,15 @@ class HomeFragment : Fragment() {
     private lateinit var barChartTemp: BarChart
     private lateinit var barChartSun3: BarChart
 
+    val set1 = arrayOf(40,60,50,65,75,23)
+    val set2 = arrayOf(30,50,40,55,50,20)
+    val set3 = arrayOf(40,60,40,70,100,30)
+    val reczne = arrayOfNulls<Int>(6)
+
+    val currentSet = set1
+
+    val values = arrayOf(40,60,40,70,90,30)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,26 +58,17 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        val SunI = ContextCompat.getColor(requireContext(), R.color.Sun)
-//        val Sun = Integer.toHexString(SunI)
-//        val WaterI = ContextCompat.getColor(requireContext(), R.color.Water)
-//        val Water = Integer.toHexString(WaterI)
-//        val TempI = ContextCompat.getColor(requireContext(), R.color.Temp)
-//        val Temp = Integer.toHexString(TempI)
-
         val Sun = "#f4cb58"
         val Water = "#497dcb"
         val Temp = "#f8bb97"
 
         barChartWater = binding.bcWATER
-        val entriesWater = arrayListOf(BarEntry(1f, 40f))
+        val entriesWater = arrayListOf(BarEntry(1f, values[0].toFloat()))
         val dataSetWater = BarDataSet(entriesWater, "")
-        //dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
         dataSetWater.setDrawValues(false)
 
         val barDataWater = BarData(dataSetWater)
         dataSetWater.color = Color.parseColor(Water)
-//        dataSet.color = Color.BLUE
         barDataWater.barWidth = 0.9f
 
         barChartWater.data = barDataWater
@@ -78,7 +78,8 @@ class HomeFragment : Fragment() {
         barChartWater.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartWater.axisLeft.axisMinimum = 0f // minimum osi Y
         barChartWater.axisLeft.axisMaximum = 100f // maksimum osi Y
-        barChartWater.axisLeft.setValueFormatter(PercentFormatter()) // formatowanie wartości osi Y
+        barChartWater.axisLeft.valueFormatter = PercentFormatter() // formatowanie wartości osi Y
+
         barChartWater.axisRight.isEnabled = false
         barChartWater.xAxis.isEnabled = false
         barChartWater.setDrawGridBackground(false)
@@ -95,25 +96,23 @@ class HomeFragment : Fragment() {
             }
         }
 
-// Dodaj linię siatki na poziomie 80%
-        val threshold = 80f
-        val yAxis = barChartWater.axisLeft
-        val gridLine = LimitLine(threshold, "")
-        gridLine.lineWidth = 2f
-        gridLine.lineColor = Color.RED
-        yAxis.addLimitLine(gridLine)
+// Dodaj linię siatki - próg
+        val threshold1 = currentSet[0].toFloat()
+        val yAxis1 = barChartWater.axisLeft
+        val gridLine1 = LimitLine(threshold1, "")
+        gridLine1.lineWidth = 2f
+        gridLine1.lineColor = Color.RED
+        yAxis1.addLimitLine(gridLine1)
 
         barChartWater.invalidate() // Odśwież wykres
 ////////////////////////////////////////////////////////////////////////////
         barChartSun = binding.bcSUN
-        val entriesSUN = arrayListOf(BarEntry(1f, 30f))
+        val entriesSUN = arrayListOf(BarEntry(1f, values[1].toFloat()))
         val dataSetSUN = BarDataSet(entriesSUN, "")
-        //dataSet.colors §= ColorTemplate.COLORFUL_COLORS.toList()
         dataSetSUN.setDrawValues(false)
 
         val barDataSUN = BarData(dataSetSUN)
         dataSetSUN.color = Color.parseColor(Sun)
-//        dataSet.color = Color.BLUE
         barDataSUN.barWidth = 0.9f
 
         barChartSun.data = barDataSUN
@@ -123,7 +122,8 @@ class HomeFragment : Fragment() {
         barChartSun.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartSun.axisLeft.axisMinimum = 0f // minimum osi Y
         barChartSun.axisLeft.axisMaximum = 100f // maksimum osi Y
-        barChartSun.axisLeft.setValueFormatter(PercentFormatter()) // formatowanie wartości osi Y
+        barChartSun.axisLeft.valueFormatter = LuxFormatter() // formatowanie wartości osi Y
+
         barChartSun.axisRight.isEnabled = false
         barChartSun.xAxis.isEnabled = false
         barChartSun.setDrawGridBackground(false)
@@ -133,23 +133,25 @@ class HomeFragment : Fragment() {
         barChartSun.setScaleEnabled(true)
         barChartSun.animateY(1000)
 
-        barChartSun.axisLeft.valueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return decimalFormat.format(value)
-            }
-        }
+        // Dodaj linię siatki - próg
+        val threshold2 = currentSet[1].toFloat()
+        val yAxis2 = barChartSun.axisLeft
+        val gridLine2 = LimitLine(threshold2, "")
+        gridLine2.lineWidth = 2f
+        gridLine2.lineColor = Color.RED
+        yAxis2.addLimitLine(gridLine2)
 
-        ////// ------------- ///////////
+        barChartSun.invalidate() // Odśwież wykres
+
+        ////////////////////// ------------- /////////////////////////////
 
         barChartWater2 = binding.bcWATER2
-        val entriesWater2 = arrayListOf(BarEntry(1f, 70f))
+        val entriesWater2 = arrayListOf(BarEntry(1f, values[2].toFloat()))
         val dataSetWater2 = BarDataSet(entriesWater2, "")
-        //dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
         dataSetWater2.setDrawValues(false)
 
         val barDataWater2 = BarData(dataSetWater2)
         dataSetWater2.color = Color.parseColor(Water)
-//        dataSet.color = Color.BLUE
         barDataWater2.barWidth = 0.9f
 
         barChartWater2.data = barDataWater2
@@ -159,7 +161,8 @@ class HomeFragment : Fragment() {
         barChartWater2.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartWater2.axisLeft.axisMinimum = 0f // minimum osi Y
         barChartWater2.axisLeft.axisMaximum = 100f // maksimum osi Y
-        barChartWater2.axisLeft.setValueFormatter(PercentFormatter()) // formatowanie wartości osi Y
+        barChartWater2.axisLeft.valueFormatter = PercentFormatter() // formatowanie wartości osi Y
+
         barChartWater2.axisRight.isEnabled = false
         barChartWater2.xAxis.isEnabled = false
         barChartWater2.setDrawGridBackground(false)
@@ -174,16 +177,25 @@ class HomeFragment : Fragment() {
                 return decimalFormat.format(value)
             }
         }
+
+        // Dodaj linię siatki - próg
+        val threshold3 = currentSet[2].toFloat()
+        val yAxis3 = barChartWater2.axisLeft
+        val gridLine3 = LimitLine(threshold3, "")
+        gridLine3.lineWidth = 2f
+        gridLine3.lineColor = Color.RED
+        yAxis3.addLimitLine(gridLine3)
+
+        barChartWater2.invalidate() // Odśwież wykres
+
 ////////////////////////////////////////////////////////////////////////////
         barChartSun2 = binding.bcSUN2
-        val entriesSUN2 = arrayListOf(BarEntry(1f, 30f))
+        val entriesSUN2 = arrayListOf(BarEntry(1f, values[3].toFloat()))
         val dataSetSUN2 = BarDataSet(entriesSUN2, "")
-        //dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
         dataSetSUN2.setDrawValues(false)
 
         val barDataSUN2 = BarData(dataSetSUN2)
         dataSetSUN2.color = Color.parseColor(Sun)
-//        dataSet.color = Color.BLUE
         barDataSUN2.barWidth = 0.9f
 
         barChartSun2.data = barDataSUN2
@@ -193,7 +205,8 @@ class HomeFragment : Fragment() {
         barChartSun2.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartSun2.axisLeft.axisMinimum = 0f // minimum osi Y
         barChartSun2.axisLeft.axisMaximum = 100f // maksimum osi Y
-        barChartSun2.axisLeft.setValueFormatter(PercentFormatter()) // formatowanie wartości osi Y
+        barChartSun2.axisLeft.valueFormatter = LuxFormatter() // formatowanie wartości osi Y
+
         barChartSun2.axisRight.isEnabled = false
         barChartSun2.xAxis.isEnabled = false
         barChartSun2.setDrawGridBackground(false)
@@ -203,16 +216,20 @@ class HomeFragment : Fragment() {
         barChartSun2.setScaleEnabled(true)
         barChartSun2.animateY(1000)
 
-        barChartSun2.axisLeft.valueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return decimalFormat.format(value)
-            }
-        }
+        // Dodaj linię siatki - próg
+        val threshold4 = currentSet[3].toFloat()
+        val yAxis4 = barChartSun2.axisLeft
+        val gridLine4 = LimitLine(threshold4, "")
+        gridLine4.lineWidth = 2f
+        gridLine4.lineColor = Color.RED
+        yAxis4.addLimitLine(gridLine4)
+
+        barChartSun2.invalidate() // Odśwież wykres
 
         ////// ------------->>>>>>>>>>>>><<<<<<<<<<<<<<------------------ ///////////
 
         barChartTemp = binding.bcTEMP
-        val entriesTemp = arrayListOf(BarEntry(1f, 70f))
+        val entriesTemp = arrayListOf(BarEntry(1f, values[5].toFloat()))
         val dataSetTemp = BarDataSet(entriesTemp, "")
         //dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
         dataSetTemp.setDrawValues(false)
@@ -228,8 +245,9 @@ class HomeFragment : Fragment() {
         barChartTemp.axisLeft.isEnabled = true
         barChartTemp.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartTemp.axisLeft.axisMinimum = 0f // minimum osi Y
-        barChartTemp.axisLeft.axisMaximum = 100f // maksimum osi Y
-        barChartTemp.axisLeft.setValueFormatter(PercentFormatter()) // formatowanie wartości osi Y
+        barChartTemp.axisLeft.axisMaximum = 50f // maksimum osi Y
+        barChartTemp.axisLeft.valueFormatter = CelsiusFormatter() // formatowanie wartości osi Y
+
         barChartTemp.axisRight.isEnabled = false
         barChartTemp.xAxis.isEnabled = false
         barChartTemp.setDrawGridBackground(false)
@@ -239,21 +257,31 @@ class HomeFragment : Fragment() {
         barChartTemp.setScaleEnabled(true)
         barChartTemp.animateY(1000)
 
-        barChartTemp.axisLeft.valueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return decimalFormat.format(value)
-            }
-        }
+
+//        barChartTemp.axisLeft.valueFormatter = object : ValueFormatter() {
+//            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+//                return decimalFormat.format(value)
+//            }
+//        }
+
+        // Dodaj linię siatki - próg
+        val threshold5 = currentSet[5].toFloat()
+        val yAxis5 = barChartTemp.axisLeft
+        val gridLine5 = LimitLine(threshold5, "")
+        gridLine5.lineWidth = 2f
+        gridLine5.lineColor = Color.RED
+        yAxis5.addLimitLine(gridLine5)
+
+        barChartTemp.invalidate() // Odśwież wykres
+
 ////////////////////////////////////////////////////////////////////////////
         barChartSun3 = binding.bcSUN3
-        val entriesSUN3 = arrayListOf(BarEntry(1f, 30f))
+        val entriesSUN3 = arrayListOf(BarEntry(1f, values[4].toFloat()))
         val dataSetSUN3 = BarDataSet(entriesSUN3, "")
-        //dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
         dataSetSUN3.setDrawValues(false)
 
         val barDataSUN3 = BarData(dataSetSUN3)
         dataSetSUN3.color = Color.parseColor(Sun)
-//        dataSet.color = Color.BLUE
         barDataSUN3.barWidth = 0.9f
 
         barChartSun3.data = barDataSUN3
@@ -263,7 +291,8 @@ class HomeFragment : Fragment() {
         barChartSun3.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartSun3.axisLeft.axisMinimum = 0f // minimum osi Y
         barChartSun3.axisLeft.axisMaximum = 100f // maksimum osi Y
-        barChartSun3.axisLeft.setValueFormatter(PercentFormatter()) // formatowanie wartości osi Y
+        barChartSun3.axisLeft.valueFormatter = LuxFormatter() // formatowanie wartości osi Y
+
         barChartSun3.axisRight.isEnabled = false
         barChartSun3.xAxis.isEnabled = false
         barChartSun3.setDrawGridBackground(false)
@@ -273,11 +302,15 @@ class HomeFragment : Fragment() {
         barChartSun3.setScaleEnabled(true)
         barChartSun3.animateY(1000)
 
-        barChartSun3.axisLeft.valueFormatter = object : ValueFormatter() {
-            override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                return decimalFormat.format(value)
-            }
-        }
+        // Dodaj linię siatki - próg
+        val threshold6 = currentSet[4].toFloat()
+        val yAxis6 = barChartSun3.axisLeft
+        val gridLine6 = LimitLine(threshold6, "")
+        gridLine6.lineWidth = 2f
+        gridLine6.lineColor = Color.RED
+        yAxis6.addLimitLine(gridLine6)
+
+        barChartSun3.invalidate() // Odśwież wykres
 
         return root
     }
@@ -289,7 +322,33 @@ class HomeFragment : Fragment() {
         }
     }
 
+    class CelsiusFormatter : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+            // Tutaj wykonaj konwersję wartości na stopnie Celsjusza i zwróć sformatowany tekst
+            val celsiusValue = convertToCelsius(value)
+            return "${celsiusValue}°C"
+        }
 
+        // Metoda do konwersji wartości na stopnie Celsjusza
+        private fun convertToCelsius(value: Float): Int {
+            // Tu wykonaj konwersję wartości, np. z wartości numerycznej na stopnie Celsjusza
+            return value.toInt()
+        }
+    }
+
+    class LuxFormatter : ValueFormatter() {
+        override fun getFormattedValue(value: Float): String {
+            // Tutaj wykonaj konwersję wartości na stopnie Celsjusza i zwróć sformatowany tekst
+            val luxValue = convertToLux(value)
+            return "${luxValue}lx"
+        }
+
+        // Metoda do konwersji wartości na stopnie Celsjusza
+        private fun convertToLux(value: Float): Int {
+            // Tu wykonaj konwersję wartości, np. z wartości numerycznej na stopnie Celsjusza
+            return value.toInt()
+        }
+    }
 
 
     override fun onDestroyView() {
