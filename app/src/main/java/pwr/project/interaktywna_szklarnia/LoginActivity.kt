@@ -20,13 +20,15 @@ import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-
+    private lateinit var databaseManager: DatabaseManager // CHWILOWO
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
         setupRegisterLink(view)
+        databaseManager = DatabaseManager()
+        databaseManager.setupSunlightListener()
     }
 
     fun setupRegisterLink(view: View?) {

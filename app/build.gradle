@@ -47,12 +47,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
 
-    //implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.2'
-    //implementation files('libs/mariadb-java-client-2.7.2-javadoc.jar')
-    //implementation files('libs/mariadb-java-client-2.7.2.jar')
-    //implementation files('libs/mariadb-java-client-2.6.0.jar')
-    //implementation files('libs/mariadb-java-client-2.7.4.jar')
-    //implementation files('libs/mariadb-java-client-2.5.2.jar')
     implementation files('libs/mariadb-java-client-2.4.4.jar')
     implementation 'com.google.firebase:firebase-database-ktx:20.0.4'// Dodana zależność MariaDB
 
@@ -68,4 +62,12 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Import the Firebase BoM
+//    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+//    // When using the BoM, you don't specify versions in Firebase library dependencies
+//
+//    implementation("com.google.firebase:firebase-analytics")
+//    implementation("com.google.firebase:firebase-auth")
+//    implementation("com.google.firebase:firebase-firestore")
 }
