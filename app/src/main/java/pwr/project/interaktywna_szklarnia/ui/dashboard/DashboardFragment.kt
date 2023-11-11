@@ -15,10 +15,9 @@ class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
+    // Dane do wczytania z bazy danych
     val set1 = arrayOf(40,60,50,65,200,23)
     val set2 = arrayOf(30,50,40,55,150,20)
     val set3 = arrayOf(40,60,40,70,210,30)
@@ -78,8 +77,6 @@ class DashboardFragment : Fragment() {
         binding.btnMinusPar6.setOnClickListener { view ->
             DecreasePar6(view)
         }
-
-
         return root
     }
 
@@ -102,7 +99,6 @@ class DashboardFragment : Fragment() {
     }
     fun onRadioButtonClicked(view: View) {
         if (view is RadioButton) {
-            // Is the button now checked?
             val checked = view.isChecked
 
             when (view.getId()) {

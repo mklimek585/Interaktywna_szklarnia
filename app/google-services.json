@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "417985689816",
+    "firebase_url": "https://realtimedb-7c282-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "realtimedb-7c282",
+    "storage_bucket": "realtimedb-7c282.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417985689816:android:e0a94c00d0117ec595ffad",
+        "android_client_info": {
+          "package_name": "pwr.project.interaktywna_szklarnia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBilCl1RWVKM5Eeyujnp2Zb_1O7LXuTG8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

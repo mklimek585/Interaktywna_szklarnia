@@ -26,26 +26,78 @@ class StatsFragment : Fragment() {
 
         val listView: ListView = binding.listView
 
-        // Poniższy kod jest tylko na potrzeby przykładu. Zastąp go swoimi danymi.
+        /** Do wstawienia dane zaciagniete z bazy **/
+        // Wilogtnosc stanowisko 1 i 2
+        val dataArrayWat1 = arrayListOf(26.0, 25.1, 21.5, 22.3, 24.8, 25.9, 26)
+        val dataArrayWat2 = arrayListOf(23.0, 24.1, 22.5, 24.3, 22.8, 23.9, 24)
+        // Natezenie swiatla stanowisko 1 i 2
+        val dataArrayLux1 = arrayListOf(300.0, 270.1, 240.5, 250.3, 260.8, 270.9, 290)
+        val dataArrayLux2 = arrayListOf(330.0, 300.1, 290.5, 270.3, 310.8, 300.9, 315)
+        // Temperatura stanowisko 1 i 2
+        val dataArrayTemp1 = arrayListOf(26.0, 25.1, 28.5, 30.3, 32.8, 30.9, 31)
+        val dataArrayTemp2 = arrayListOf(25.2, 24.5, 26.5, 25.2, 28.8, 27.5, 26.2)
+
         val data = ArrayList<DataModel>()
 
         data.add(DataModel("Wilgotność",
             "Stanowisko 1",
-            mapOf(1 to 26.0, 2 to 25.1, 3 to 21.5, 4 to 22.3, 5 to 24.8, 6 to 25.9, 7 to 26.0), Color.BLUE,
+            mapOf((1 to dataArrayWat1[0]) as Pair<Int, Double>,
+                (2 to dataArrayWat1[1]) as Pair<Int, Double>,
+                (3 to dataArrayWat1[2]) as Pair<Int, Double>,
+                (4 to dataArrayWat1[3]) as Pair<Int, Double>,
+                (5 to dataArrayWat1[4]) as Pair<Int, Double>,
+                (6 to dataArrayWat1[5]) as Pair<Int, Double>,
+                (7 to dataArrayWat1[6]) as Pair<Int, Double>
+            ), Color.BLUE,
             "Stanowisko 2",
-            mapOf(1 to 23.0, 2 to 24.1, 3 to 22.5, 4 to 24.3, 5 to 22.8, 6 to 23.9, 7 to 24.0), Color.RED
+            mapOf((1 to dataArrayWat2[0]) as Pair<Int, Double>,
+                (2 to dataArrayWat2[1]) as Pair<Int, Double>,
+                (3 to dataArrayWat2[2]) as Pair<Int, Double>,
+                (4 to dataArrayWat2[3]) as Pair<Int, Double>,
+                (5 to dataArrayWat2[4]) as Pair<Int, Double>,
+                (6 to dataArrayWat2[5]) as Pair<Int, Double>,
+                (7 to dataArrayWat2[6]) as Pair<Int, Double>
+            ), Color.RED
         ))
-        data.add(DataModel("Wilgotność",
+        data.add(DataModel("Natężenie światła",
             "Stanowisko 1",
-            mapOf(1 to 26.0, 2 to 25.1, 3 to 21.5, 4 to 22.3, 5 to 24.8, 6 to 25.9, 7 to 26.0), Color.BLUE,
+            mapOf((1 to dataArrayLux1[0]) as Pair<Int, Double>,
+                (2 to dataArrayLux1[1]) as Pair<Int, Double>,
+                (3 to dataArrayLux1[2]) as Pair<Int, Double>,
+                (4 to dataArrayLux1[3]) as Pair<Int, Double>,
+                (5 to dataArrayLux1[4]) as Pair<Int, Double>,
+                (6 to dataArrayLux1[5]) as Pair<Int, Double>,
+                (7 to dataArrayLux1[6]) as Pair<Int, Double>
+            ), Color.BLUE,
             "Stanowisko 2",
-            mapOf(1 to 23.0, 2 to 24.1, 3 to 22.5, 4 to 24.3, 5 to 22.8, 6 to 23.9, 7 to 24.0), Color.RED
+            mapOf((1 to dataArrayLux2[0]) as Pair<Int, Double>,
+                (2 to dataArrayLux2[1]) as Pair<Int, Double>,
+                (3 to dataArrayLux2[2]) as Pair<Int, Double>,
+                (4 to dataArrayLux2[3]) as Pair<Int, Double>,
+                (5 to dataArrayLux2[4]) as Pair<Int, Double>,
+                (6 to dataArrayLux2[5]) as Pair<Int, Double>,
+                (7 to dataArrayLux2[6]) as Pair<Int, Double>
+            ), Color.RED
         ))
-        data.add(DataModel("Wilgotność",
+        data.add(DataModel("Temperatura",
             "Stanowisko 1",
-            mapOf(1 to 26.0, 2 to 25.1, 3 to 21.5, 4 to 22.3, 5 to 24.8, 6 to 25.9, 7 to 26.0), Color.BLUE,
+            mapOf((1 to dataArrayTemp1[0]) as Pair<Int, Double>,
+                (2 to dataArrayTemp1[1]) as Pair<Int, Double>,
+                (3 to dataArrayTemp1[2]) as Pair<Int, Double>,
+                (4 to dataArrayTemp1[3]) as Pair<Int, Double>,
+                (5 to dataArrayTemp1[4]) as Pair<Int, Double>,
+                (6 to dataArrayTemp1[5]) as Pair<Int, Double>,
+                (7 to dataArrayTemp1[6]) as Pair<Int, Double>
+            ), Color.BLUE,
             "Stanowisko 2",
-            mapOf(1 to 23.0, 2 to 24.1, 3 to 22.5, 4 to 24.3, 5 to 22.8, 6 to 23.9, 7 to 24.0), Color.RED
+            mapOf((1 to dataArrayTemp2[0]) as Pair<Int, Double>,
+                (2 to dataArrayTemp2[1]) as Pair<Int, Double>,
+                (3 to dataArrayTemp2[2]) as Pair<Int, Double>,
+                (4 to dataArrayTemp2[3]) as Pair<Int, Double>,
+                (5 to dataArrayTemp2[4]) as Pair<Int, Double>,
+                (6 to dataArrayTemp2[5]) as Pair<Int, Double>,
+                (7 to dataArrayTemp2[6]) as Pair<Int, Double>
+            ), Color.RED
         ))
 
         val adapter = StatsAdapter(requireContext(), data)
@@ -60,41 +112,6 @@ class StatsFragment : Fragment() {
     }
 }
 
-
-//class StatsFragment : Fragment() {
-//    private var _binding: FragmentStatsBinding? = null
-//    private val binding get() = _binding!!
-//
-//    data class DataModel(val title: String, val label: String, val data: Map<Int, Double>, val color: Int)
-//
-//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-//        val statsViewModel = ViewModelProvider(this).get(StatsViewModel::class.java)
-//
-//        _binding = FragmentStatsBinding.inflate(inflater, container, false)
-//        val root: View = binding.root
-//
-//        val listView: ListView = binding.listView
-//
-//        // Poniższy kod jest tylko na potrzeby przykładu. Zastąp go swoimi danymi.
-//        val data = ArrayList<DataModel>()
-//
-//        // TODO: Zmiana DataModel na przyjmujący dwie paczki danych by wykresy były dla dwóch stanowisk
-//        // TODO: Zmienne kolory dla każdej paczki danych
-//        data.add(DataModel("Wilgotność","Uśredniona wiglotność", mapOf(1 to 23.0, 2 to 24.1, 3 to 22.5, 4 to 24.3, 5 to 22.8, 6 to 23.9, 7 to 24.0), Color.BLUE),)
-//        data.add(DataModel("Nasłonecznienie","Uśrednione nasłonecznienie", mapOf(1 to 23.2, 2 to 24.2, 3 to 22.8, 4 to 24.2, 5 to 22.7, 6 to 23.7, 7 to 24.0), Color.parseColor("#ff681f")))
-//        data.add(DataModel("Temperatura w szklarni","Uśredniona temperatura", mapOf(1 to 23.1, 2 to 24.0, 3 to 22.7, 4 to 24.4, 5 to 22.9, 6 to 23.8, 7 to 23.9), Color.RED))
-//
-//        val adapter = StatsAdapter(requireContext(), data)
-//        listView.adapter = adapter
-//
-//        return root
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
-//}
-
+// TODO Zmiana 1-7 na dane dni tygodnia
 // TODO dodanie możliwości zmiany wyświetlania zakresy wykresu w ustaweiniach np z tygodnia na miesiac
 

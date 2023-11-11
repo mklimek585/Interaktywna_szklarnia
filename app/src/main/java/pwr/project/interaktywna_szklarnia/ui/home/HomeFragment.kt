@@ -38,14 +38,15 @@ class HomeFragment : Fragment() {
     private lateinit var barChartTemp: BarChart
     private lateinit var barChartSun3: BarChart
 
+    // Wektory z progami z bazy danych:
     val set1 = arrayOf(40,60,50,65,75,23)
     val set2 = arrayOf(30,50,40,55,50,20)
     val set3 = arrayOf(40,60,40,70,100,30)
     val reczne = arrayOfNulls<Int>(6)
 
-    val currentSet = set1
-
-    val values = arrayOf(40,60,40,70,90,30)
+    val currentSet = set1 // Aktualne progi
+    // (wilgotnosc1, swiatlo1, wilgotnosc2, swiatlo2, sloneczne, temp szklarni)
+    val values = arrayOf(80,60,40,70,90,30) // Aktualne wartosc
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,7 +97,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-// Dodaj linię siatki - próg
+        // Dodaj linię siatki - próg
         val threshold1 = currentSet[0].toFloat()
         val yAxis1 = barChartWater.axisLeft
         val gridLine1 = LimitLine(threshold1, "")
