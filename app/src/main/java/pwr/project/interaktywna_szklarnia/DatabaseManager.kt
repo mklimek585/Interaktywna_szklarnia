@@ -21,11 +21,12 @@ class DatabaseManager {
 
     private fun setupDatabase() {
         database = Firebase.database.reference
-        setupLatestSunlightListener()
-        setupAllSunlightListener()
+//        setupLatestObjectMeasurmentsListener()
+//        setupAllObjectMeasurmentsListener()
+//        setupCurrentThresholdListener()
     }
 
-    private fun setupLatestSunlightListener() {
+    private fun setupLatestObjectMeasurmentsListener() {
         val measurementsRef = database.child("Szklarnia/Measurements")
         measurementsRef.orderByKey().limitToLast(1).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -42,7 +43,7 @@ class DatabaseManager {
         })
     }
 
-    private fun setupAllSunlightListener() {
+    private fun setupAllObjectMeasurmentsListener() {
         val measurementsRef = database.child("Szklarnia/Measurements")
         measurementsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -58,6 +59,20 @@ class DatabaseManager {
             }
         })
     }
+
+//    private fun setupCurrentThresholdListener() {
+//        val currentSetRef = database.child("Szklarnia/Threshold sets/In use")
+//        currentSetRef.orderByKey().addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                val set = dataSnapshot.child("Set").getValue(Long::class.java)
+//                Log.i(TAG_DB, "Set currently in use: $set")
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                Log.w(TAG_DB, "loadPost:onCancelled", databaseError.toException())
+//            }
+//        })
+//    }
 }
 
 
