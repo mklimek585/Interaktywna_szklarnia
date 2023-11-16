@@ -28,7 +28,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(view)
         setupRegisterLink(view)
         databaseManager = DatabaseManager()
-        databaseManager.setupSunlightListener()
     }
 
     fun setupRegisterLink(view: View?) {

@@ -13,32 +13,52 @@ import java.sql.DriverManager
 import kotlin.math.log
 
 class DatabaseManager {
-    private var connection: Connection? = null
-    val TAG_DB = "Debug_DB"
-
-    //    private val databaseReference = FirebaseDatabase.getInstance().getReference("path_to_your_data")
     private lateinit var database: DatabaseReference
-
+    val TAG_DB = "Debug_DB"
     init {
-            // Kod inicjalizacyjny
-            setupSunlightListener()
-        }
-
-        fun setupSunlightListener() {
-            val sunlightRef = FirebaseDatabase.getInstance().getReference("Szklarnia/Sunlight")
-
-            sunlightRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val sunlight = dataSnapshot.getValue(Sunlight::class.java)
-                    Log.i(TAG_DB, sunlight.toString())
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.i(TAG_DB, "Coś poszlo nie tak")
-                }
-            })
-        }
+        setupDatabase()
     }
+
+    private fun setupDatabase() {
+        database = Firebase.database.reference
+        setupLatestSunlightListener()
+        setupAllSunlightListener()
+    }
+
+    private fun setupLatestSunlightListener() {
+        val measurementsRef = database.child("Szklarnia/Measurements")
+        measurementsRef.orderByKey().limitToLast(1).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val lux = snapshot.child("lux").getValue(String::class.java)
+                    val temp = snapshot.child("temp").getValue(String::class.java)
+                    Log.i(TAG_DB, "Latest Measurement - Lux: $lux, Temp: $temp")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG_DB, "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    private fun setupAllSunlightListener() {
+        val measurementsRef = database.child("Szklarnia/Measurements")
+        measurementsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    val lux = snapshot.child("lux").getValue(String::class.java)
+                    val temp = snapshot.child("temp").getValue(String::class.java)
+                    Log.i(TAG_DB, "Measurement - Lux: $lux, Temp: $temp")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG_DB, "loadPost:onCancelled", databaseError.toException())
+            }
+        })
+    }
+}
 
 
 
