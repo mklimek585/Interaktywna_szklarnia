@@ -1,6 +1,7 @@
 package pwr.project.interaktywna_szklarnia.ui.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,29 +9,47 @@ import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import pwr.project.interaktywna_szklarnia.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
 
+    val TAG = "DashFG"
     private var _binding: FragmentDashboardBinding? = null
-
     private val binding get() = _binding!!
+    private lateinit var viewModel: DashboardViewModel
 
     // Dane do wczytania z bazy danych
-    val set1 = arrayOf(40,60,50,65,200,23)
+    val set1 = arrayOf(40,60,50,65,200,23) // wk1lum, wk1hum, wk2lum, wk2hum, mslum, mstemp
     val set2 = arrayOf(30,50,40,55,150,20)
     val set3 = arrayOf(40,60,40,70,210,30)
     val reczne = arrayOfNulls<Int>(6)
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        // Inicjalizacja UI i ViewModel
+        viewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
+
+        // Obserwowanie LiveData
+        viewModel.currentSet.observe(viewLifecycleOwner, Observer { set ->
+            RadioButtonInit(set.toLong())
+            // Aktualizacja UI na podstawie wartości 'set'
+        })
+
+        viewModel.loadSets(object : DashboardViewModel.DataCallback {
+            override fun onDataLoaded(data: Array<Array<Int>>) {
+                data.forEachIndexed { setIndex, set ->
+                    set.forEachIndexed { valueIndex, value ->
+                        Log.i("ArrayLog", "Set ${setIndex + 1} - Index $valueIndex: Value $value")
+                    }
+                }
+            }
+        })
+
         val dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        RadioButtonInit()
-        FillData(set1)
-
 
         binding.btnConfirm.setOnClickListener { view ->
             SaveToDatabase(view)
@@ -122,9 +141,16 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    fun RadioButtonInit() {
-        // TODO wczytanie wybranego presetu z bazy
-        binding.RD3.isChecked = true
+    fun RadioButtonInit(current: Long?) {
+        if (current != null) {
+            when(current.toInt()) {
+                1 -> binding.RD1.isChecked = true
+                2 -> binding.RD2.isChecked = true
+                3 -> binding.RD3.isChecked = true
+                4 -> binding.RDR.isChecked = true
+                else -> Log.i(TAG, "Current set value is valid")
+            }
+        }
     }
 
     fun IncreasePar1(view: View) {
