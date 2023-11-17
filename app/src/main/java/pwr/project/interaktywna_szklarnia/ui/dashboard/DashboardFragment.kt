@@ -114,15 +114,15 @@ class DashboardFragment : Fragment() {
             RadioButtonInit(currentSet.toLong())
         }
     }
-
+        // set -> sun 0 / temp 1 / wk1hum 2 / wk1light 3 / wk2hum 4 / wk2light 5
     fun FillData(set: Array<Int>) {
-        binding.ETpar1.setText(set[0].toString())
-        binding.ETpar2.setText(set[1].toString())
-        binding.ETpar3.setText(set[2].toString())
-        binding.ETpar4.setText(set[3].toString())
-        binding.ETpar5.setText(set[4].toString())
-        binding.ETpar6.setText(set[5].toString())
-    } // TODO napraw kolejnosc
+        binding.ETpar1.setText(set[3].toString()) // wk1lum
+        binding.ETpar2.setText(set[2].toString()) // wk1hum
+        binding.ETpar3.setText(set[5].toString()) // wk2lum
+        binding.ETpar4.setText(set[4].toString()) // wk2hum
+        binding.ETpar5.setText(set[0].toString()) // sun
+        binding.ETpar6.setText(set[1].toString()) // temp
+    }
 
     fun SaveToDatabase(view: View) {
         Toast.makeText(requireContext(), "Zapisano", Toast.LENGTH_SHORT).show()
