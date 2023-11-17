@@ -21,33 +21,38 @@ class DashboardFragment : Fragment() {
     private lateinit var viewModel: DashboardViewModel
 
     // Dane do wczytania z bazy danych
-    val set1 = arrayOf(40,60,50,65,200,23) // wk1lum, wk1hum, wk2lum, wk2hum, mslum, mstemp
-    val set2 = arrayOf(30,50,40,55,150,20)
-    val set3 = arrayOf(40,60,40,70,210,30)
-    val reczne = arrayOfNulls<Int>(6)
+    var set1 = arrayOf(55,55,55,55,55,55) // wk1lum, wk1hum, wk2lum, wk2hum, mslum, mstemp
+    var set2 = arrayOf(55,55,55,55,55,55)
+    var set3 = arrayOf(55,55,55,55,55,55)
+    var set4 = arrayOf(55,55,55,55,55,55)
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        // Inicjalizacja UI i ViewModel
+
         viewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
 
         // Obserwowanie LiveData
-        viewModel.currentSet.observe(viewLifecycleOwner, Observer { set ->
-            RadioButtonInit(set.toLong())
-            // Aktualizacja UI na podstawie wartości 'set'
-        })
-
         viewModel.loadSets(object : DashboardViewModel.DataCallback {
             override fun onDataLoaded(data: Array<Array<Int>>) {
                 data.forEachIndexed { setIndex, set ->
                     set.forEachIndexed { valueIndex, value ->
                         Log.i("ArrayLog", "Set ${setIndex + 1} - Index $valueIndex: Value $value")
+                        when(setIndex) {
+                            0 -> set1[valueIndex] = value
+                            1 -> set2[valueIndex] = value
+                            2 -> set3[valueIndex] = value
+                            3 -> set4[valueIndex] = value
+                        }
                     }
                 }
+                updateUIBasedOnCurrentSet()
             }
         })
 
-        val dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
+        viewModel.currentSet.observe(viewLifecycleOwner, Observer { set ->
+            RadioButtonInit(set.toLong()) })
+
+        //val dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -104,6 +109,12 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 
+    fun updateUIBasedOnCurrentSet() {
+        viewModel.currentSet.value?.let { currentSet ->
+            RadioButtonInit(currentSet.toLong())
+        }
+    }
+
     fun FillData(set: Array<Int>) {
         binding.ETpar1.setText(set[0].toString())
         binding.ETpar2.setText(set[1].toString())
@@ -144,10 +155,14 @@ class DashboardFragment : Fragment() {
     fun RadioButtonInit(current: Long?) {
         if (current != null) {
             when(current.toInt()) {
-                1 -> binding.RD1.isChecked = true
-                2 -> binding.RD2.isChecked = true
-                3 -> binding.RD3.isChecked = true
-                4 -> binding.RDR.isChecked = true
+                1 -> { binding.RD1.isChecked = true
+                    FillData(set1) }
+                2 -> { binding.RD2.isChecked = true
+                    FillData(set2) }
+                3 -> { binding.RD3.isChecked = true
+                    FillData(set3) }
+                4 -> { binding.RDR.isChecked = true
+                    FillData(set4) }
                 else -> Log.i(TAG, "Current set value is valid")
             }
         }
