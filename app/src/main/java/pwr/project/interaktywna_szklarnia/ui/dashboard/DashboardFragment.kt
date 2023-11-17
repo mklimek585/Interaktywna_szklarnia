@@ -122,10 +122,11 @@ class DashboardFragment : Fragment() {
         binding.ETpar4.setText(set[3].toString())
         binding.ETpar5.setText(set[4].toString())
         binding.ETpar6.setText(set[5].toString())
-    }
+    } // TODO napraw kolejnosc
 
     fun SaveToDatabase(view: View) {
         Toast.makeText(requireContext(), "Zapisano", Toast.LENGTH_SHORT).show()
+        // TODO
     }
     fun onRadioButtonClicked(view: View) {
         if (view is RadioButton) {
