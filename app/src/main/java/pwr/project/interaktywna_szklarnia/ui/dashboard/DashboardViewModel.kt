@@ -10,6 +10,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
+
+
 class DashboardViewModel : ViewModel() {
     val TAG = "DashVMdb"
     private val databaseRef = Firebase.database.reference
@@ -58,12 +60,30 @@ class DashboardViewModel : ViewModel() {
         })
     }
 
+    fun updateCurrentSetInDatabase(setNumber: Int) {
+        val currentSetRef = databaseRef.child("Szklarnia/Threshold sets/In use/Set")
+        currentSetRef.setValue(setNumber)
+            .addOnSuccessListener {
+                Log.i(TAG, "Current set updated successfully to $setNumber")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Failed to update current set", e)
+            }
+    }
 
-//    private fun logArrayValues(array: Array<Int>, setName: String) {
-//        array.forEachIndexed { index, value ->
-//            Log.i("ArrayLog", "$setName - Index $index: Value $value")
-//        }
-//    }
+    fun updateDatabase(setNumber: Int, updatedSet: HashMap<String, Int>, callback: (Boolean) -> Unit) {
+        val setKey = if (setNumber == 4) "Custom" else setNumber.toString()
+        val setRef = databaseRef.child("Szklarnia/Threshold sets").child(setKey)
+
+        setRef.updateChildren(updatedSet as Map<String, Any>)
+            .addOnSuccessListener {
+                callback(true) // Sukces
+            }
+            .addOnFailureListener {
+                callback(false) // Niepowodzenie
+            }
+    }
+
 
     private var currentSetListener: ValueEventListener? = null
 

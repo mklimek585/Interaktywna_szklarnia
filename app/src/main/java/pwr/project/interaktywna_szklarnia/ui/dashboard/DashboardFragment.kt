@@ -26,7 +26,6 @@ class DashboardFragment : Fragment() {
     var set3 = arrayOf(55,55,55,55,55,55)
     var set4 = arrayOf(55,55,55,55,55,55)
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         viewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
@@ -57,7 +56,7 @@ class DashboardFragment : Fragment() {
         val root: View = binding.root
 
         binding.btnConfirm.setOnClickListener { view ->
-            SaveToDatabase(view)
+            updateDbFromUI(view)
         }
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radioButton: RadioButton = group.findViewById(checkedId)
@@ -115,7 +114,7 @@ class DashboardFragment : Fragment() {
         }
     }
         // set -> sun 0 / temp 1 / wk1hum 2 / wk1light 3 / wk2hum 4 / wk2light 5
-    fun FillData(set: Array<Int>) {
+    fun fillData(set: Array<Int>) {
         binding.ETpar1.setText(set[3].toString()) // wk1lum
         binding.ETpar2.setText(set[2].toString()) // wk1hum
         binding.ETpar3.setText(set[5].toString()) // wk2lum
@@ -124,10 +123,50 @@ class DashboardFragment : Fragment() {
         binding.ETpar6.setText(set[1].toString()) // temp
     }
 
-    fun SaveToDatabase(view: View) {
-        Toast.makeText(requireContext(), "Zapisano", Toast.LENGTH_SHORT).show()
-        // TODO
+    fun updateDbFromUI(view: View) { // setNumber
+        val setNumber = when {
+            binding.RD1.isChecked -> 1
+            binding.RD2.isChecked -> 2
+            binding.RD3.isChecked -> 3
+            binding.RDR.isChecked -> 4
+            else -> {
+                Log.i(TAG, "Error in getting setNumber from radioButton")
+                return
+            }
+        }
+        viewModel.updateCurrentSetInDatabase(setNumber)
+
+        if(setNumber == 4) {
+            try {
+                val wk1lum = binding.ETpar1.text.toString().toInt() // wk1lum
+                val wk1hum = binding.ETpar2.text.toString().toInt() // wk1hum
+                val wk2lum = binding.ETpar3.text.toString().toInt() // wk2lum
+                val wk2hum = binding.ETpar4.text.toString().toInt() // wk2hum
+                val sun = binding.ETpar5.text.toString().toInt() // sun
+                val temp = binding.ETpar6.text.toString().toInt() // temp
+
+                val updatedSet = hashMapOf(
+                    "wk1-Light" to wk1lum,
+                    "wk1-Humidity" to wk1hum,
+                    "wk2-Light" to wk2lum,
+                    "wk2-Humidity" to wk2hum,
+                    "Sunlight" to sun,
+                    "Temperature" to temp
+                )
+
+                viewModel.updateDatabase(setNumber, updatedSet) { isSuccess ->
+                    if (isSuccess) {
+                        Toast.makeText(context, "Zaktualizowano", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Aktualizacja nie powiodła się", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: NumberFormatException) {
+                Toast.makeText(context, "Wprowadź poprawne wartości liczbowe", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
     fun onRadioButtonClicked(view: View) {
         if (view is RadioButton) {
             val checked = view.isChecked
@@ -135,19 +174,22 @@ class DashboardFragment : Fragment() {
             when (view.getId()) {
                 binding.RD1.id ->
                     if (checked) {
-                        FillData(set1)
+                        fillData(set1)
                     }
                 binding.RD2.id ->
                     if (checked) {
-                        FillData(set2)
+                        fillData(set2)
                     }
                 binding.RD3.id ->
                     if (checked) {
-                        FillData(set3)
+                        fillData(set3)
                     }
                 binding.RDR.id ->
                     if (checked) {
-                        // TODO
+                        // Rethink idea
+                        // If usr wants to edit one of presets -> dont change all values
+                        // Else if user want to get already stored custom set -> click on radio btn
+                        fillData(set4)
                     }
             }
         }
@@ -157,13 +199,13 @@ class DashboardFragment : Fragment() {
         if (current != null) {
             when(current.toInt()) {
                 1 -> { binding.RD1.isChecked = true
-                    FillData(set1) }
+                    fillData(set1) }
                 2 -> { binding.RD2.isChecked = true
-                    FillData(set2) }
+                    fillData(set2) }
                 3 -> { binding.RD3.isChecked = true
-                    FillData(set3) }
+                    fillData(set3) }
                 4 -> { binding.RDR.isChecked = true
-                    FillData(set4) }
+                    fillData(set4) }
                 else -> Log.i(TAG, "Current set value is valid")
             }
         }
