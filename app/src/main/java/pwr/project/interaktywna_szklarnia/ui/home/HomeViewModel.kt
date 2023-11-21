@@ -17,9 +17,11 @@ class HomeViewModel : ViewModel() {
     val currentSet: LiveData<String> get() = _currentSet
 
     private var currentSetListener: ValueEventListener? = null
+    private var currentMeasurmentsListener: ValueEventListener? = null
 
     init {
         setupCurrentThresholdListener()
+        setupCurrentMeasurementsListener()
     }
 
     override fun onCleared() {
@@ -74,24 +76,55 @@ class HomeViewModel : ViewModel() {
         })
     }
 
-//    private fun setupCurrentMeasurmentsListener() {
-//        val currentMrmRef = databaseRef.child("Szklarnia/Measurements")
-//        val currentWk1MrmRef = databaseRef.child("Szklarnia/Wrokstations/Workstation 1/Measurements")
-//        val currentWk2MrmRef = databaseRef.child("Szklarnia/Wrokstations/Workstation 2/Measurements")
-//        val listener = object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                val set = dataSnapshot.child("Set").getValue(Long::class.java)
-//                _currentSet.value = set?.toString()
-//                Log.i(TAG, "Set currently in use: $set")
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-//            }
-//        }
-//        currentSetRef.addValueEventListener(listener)
-//        currentSetListener = listener
-//    }
+    private fun setupCurrentMeasurementsListener() {
+        val currentMrmRef = databaseRef.child("Szklarnia/Measurements").limitToLast(1)
+        val currentWk1MrmRef = databaseRef.child("Szklarnia/Workstations/Workstation 1/Measurements").limitToLast(1)
+        val currentWk2MrmRef = databaseRef.child("Szklarnia/Workstations/Workstation 2/Measurements").limitToLast(1)
+
+        val generalListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    // Przetwarzanie danych dla ogólnych pomiarów
+                    Log.i(TAG, "General Measurement: ${snapshot.value}")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Obsługa błędu
+            }
+        }
+
+        val wk1Listener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    // Przetwarzanie danych dla Workstation 1
+                    Log.i(TAG, "Workstation 1 Measurement: ${snapshot.value}")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Obsługa błędu
+            }
+        }
+
+        val wk2Listener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (snapshot in dataSnapshot.children) {
+                    // Przetwarzanie danych dla Workstation 2
+                    Log.i(TAG, "Workstation 2 Measurement: ${snapshot.value}")
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Obsługa błędu
+            }
+        }
+
+        currentMrmRef.addValueEventListener(generalListener)
+        currentWk1MrmRef.addValueEventListener(wk1Listener)
+        currentWk2MrmRef.addValueEventListener(wk2Listener)
+    }
+
 
 
 
