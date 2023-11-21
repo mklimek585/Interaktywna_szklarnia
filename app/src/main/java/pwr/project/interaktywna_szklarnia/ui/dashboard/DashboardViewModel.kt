@@ -10,8 +10,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-
-
 class DashboardViewModel : ViewModel() {
     val TAG = "DashVMdb"
     private val databaseRef = Firebase.database.reference
@@ -26,6 +24,12 @@ class DashboardViewModel : ViewModel() {
     val dataSet3: LiveData<Array<Int>> = _dataSet3
     private val _dataSet4 = MutableLiveData<Array<Int>>()
     val dataSet4: LiveData<Array<Int>> = _dataSet4
+
+    private var currentSetListener: ValueEventListener? = null
+
+    init {
+        setupCurrentThresholdListener()
+    }
 
     interface DataCallback {
         fun onDataLoaded(data: Array<Array<Int>>)
@@ -82,13 +86,6 @@ class DashboardViewModel : ViewModel() {
             .addOnFailureListener {
                 callback(false) // Niepowodzenie
             }
-    }
-
-
-    private var currentSetListener: ValueEventListener? = null
-
-    init {
-        setupCurrentThresholdListener()
     }
 
     private fun setupCurrentThresholdListener() {

@@ -3,6 +3,7 @@ package pwr.project.interaktywna_szklarnia.ui.home
 import android.graphics.Color
 import android.icu.text.DecimalFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentHomeBinding
+import pwr.project.interaktywna_szklarnia.ui.dashboard.DashboardViewModel
 import pwr.project.interaktywna_szklarnia.ui.settings.SettingsViewModel
 
 
@@ -38,23 +40,37 @@ class HomeFragment : Fragment() {
     private lateinit var barChartTemp: BarChart
     private lateinit var barChartSun3: BarChart
 
-    // Wektory z progami z bazy danych:
-    val set1 = arrayOf(40,60,50,65,75,23)
-    val set2 = arrayOf(30,50,40,55,50,20)
-    val set3 = arrayOf(40,60,40,70,100,30)
-    val reczne = arrayOfNulls<Int>(6)
+    private lateinit var viewModel: HomeViewModel
 
-    val currentSet = set1 // Aktualne progi
+    // Wektory z progami z bazy danych:
+    var currentSet = arrayOf(40,60,50,65,75,23) // Aktualne progi
     // (wilgotnosc1, swiatlo1, wilgotnosc2, swiatlo2, sloneczne, temp szklarni)
-    val values = arrayOf(80,60,40,70,90,30) // Aktualne wartosc
+    var values = arrayOf(80,60,40,70,90,30) // Aktualne wartosc
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        // Obserwowanie LiveData
+        viewModel.loadSets(object : HomeViewModel.DataCallback {
+            override fun onDataLoaded(data: Array<Array<Int>>) {
+                data.forEachIndexed { setIndex, set ->
+                    set.forEachIndexed { valueIndex, value ->
+                        Log.i("ArrayLog", "Set ${setIndex + 1} - Index $valueIndex: Value $value")
+                        currentSet[valueIndex] = value
+                    }
+                }
+                //updateUIBasedOnCurrentSet() TODO
+            }
+        })
+
+
+
+
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -317,7 +333,6 @@ class HomeFragment : Fragment() {
     }
 
     class PercentFormatter : ValueFormatter(), IAxisValueFormatter {
-
         override fun getFormattedValue(value: Float, axis: AxisBase?): String {
             return "${value.toInt()}%"
         }
