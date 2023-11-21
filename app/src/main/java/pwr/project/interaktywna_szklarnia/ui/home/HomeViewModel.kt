@@ -47,30 +47,25 @@ class HomeViewModel : ViewModel() {
     }
 
     interface DataCallback {
-        fun onDataLoaded(data: Array<Array<Int>>)
+        fun onDataLoaded(data: Array<Int>)
     }
 
-    fun loadSets(callback: DataCallback) {
-        val setsRef = databaseRef.child("Szklarnia/Threshold sets")
-        val result = Array<Array<Int>?>(4) { null }
+    fun loadSet(setNumber: String, callback: DataCallback) {
+        val key = if (setNumber == "4") "Custom" else setNumber
+        val setRef = databaseRef.child("Szklarnia/Threshold sets").child(key)
 
-        setsRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        setRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.forEachIndexed { index, setSnapshot ->
-                    if (index < result.size) {
-                        val setValues = setSnapshot.children.mapNotNull { paramSnapshot ->
-                            val value = paramSnapshot.value
-                            when (value) {
-                                is Long -> value.toInt()
-                                is String -> value.toIntOrNull() ?: 0
-                                else -> 0
-                            }
-                        }.toTypedArray()
-
-                        result[index] = setValues
+                val setValues = dataSnapshot.children.mapNotNull { paramSnapshot ->
+                    val value = paramSnapshot.value
+                    when (value) {
+                        is Long -> value.toInt()
+                        is String -> value.toIntOrNull() ?: 0
+                        else -> 0
                     }
-                }
-                callback.onDataLoaded(result.filterNotNull().toTypedArray())
+                }.toTypedArray()
+
+                callback.onDataLoaded(setValues)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -78,5 +73,26 @@ class HomeViewModel : ViewModel() {
             }
         })
     }
+
+//    private fun setupCurrentMeasurmentsListener() {
+//        val currentMrmRef = databaseRef.child("Szklarnia/Measurements")
+//        val currentWk1MrmRef = databaseRef.child("Szklarnia/Wrokstations/Workstation 1/Measurements")
+//        val currentWk2MrmRef = databaseRef.child("Szklarnia/Wrokstations/Workstation 2/Measurements")
+//        val listener = object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                val set = dataSnapshot.child("Set").getValue(Long::class.java)
+//                _currentSet.value = set?.toString()
+//                Log.i(TAG, "Set currently in use: $set")
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+//            }
+//        }
+//        currentSetRef.addValueEventListener(listener)
+//        currentSetListener = listener
+//    }
+
+
 
 }

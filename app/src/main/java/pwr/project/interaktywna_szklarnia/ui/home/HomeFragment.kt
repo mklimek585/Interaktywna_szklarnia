@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationCompat.getColor
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -28,6 +29,7 @@ import pwr.project.interaktywna_szklarnia.ui.settings.SettingsViewModel
 
 class HomeFragment : Fragment() {
 
+    val TAG = "HomeF"
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
@@ -47,26 +49,30 @@ class HomeFragment : Fragment() {
     // (wilgotnosc1, swiatlo1, wilgotnosc2, swiatlo2, sloneczne, temp szklarni)
     var values = arrayOf(80,60,40,70,90,30) // Aktualne wartosc
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java) // Init
 
-        // Obserwowanie LiveData
-        viewModel.loadSets(object : HomeViewModel.DataCallback {
-            override fun onDataLoaded(data: Array<Array<Int>>) {
-                data.forEachIndexed { setIndex, set ->
-                    set.forEachIndexed { valueIndex, value ->
-                        Log.i("ArrayLog", "Set ${setIndex + 1} - Index $valueIndex: Value $value")
-                        currentSet[valueIndex] = value
+    // Obserwowanie LiveData
+        viewModel.currentSet.observe(viewLifecycleOwner, Observer { setNumber ->
+            Log.i(TAG, "Threshold set currently in use: $setNumber")
+            viewModel.loadSet(setNumber, object : HomeViewModel.DataCallback {
+                override fun onDataLoaded(data: Array<Int>) {
+                    for (value in data) {
+                        Log.i(TAG, "Value: $value")
                     }
+                    // Tutaj możesz użyć danych z zestawu, np. aktualizując UI
+                    //updateUIBasedOnCurrentSet(data)
                 }
-                //updateUIBasedOnCurrentSet() TODO
-            }
+            })
         })
+
+
+
+
+
+
+
 
 
 
