@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
     // (wilgotnosc1, swiatlo1, wilgotnosc2, swiatlo2, sloneczne, temp szklarni)
     var values = arrayOf(80,60,40,70,90,30) // Aktualne wartosc
 
+    // TODO threshold
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java) // Init
@@ -142,7 +143,7 @@ class HomeFragment : Fragment() {
             barChartSun.animateY(1000)
 
             // Dodaj linię siatki - próg
-            val threshold6 = currentSet[4].toFloat()
+            val threshold6 = currentSet[1].toFloat()
             val yAxis6 = barChartSun.axisLeft
             val gridLine6 = LimitLine(threshold6, "")
             gridLine6.lineWidth = 2f
@@ -329,6 +330,15 @@ class HomeFragment : Fragment() {
                 override fun onDataLoaded(data: Array<Int>) {
                     for (value in data) {
                         Log.i(TAG, "Value: $value")
+                    }
+                    currentSet[4] = data[0] // sun gen
+                    currentSet[5] = data[1] // temp
+                    currentSet[0] = data[2] // wk1 hum
+                    currentSet[1] = data[3] // wk1 temp
+                    currentSet[2] = data[4] // wk2 hum
+                    currentSet[3] = data[5] // wk2 temp
+                    for (value in currentSet) {
+                        Log.i(TAG, "CurrentSet: $value")
                     }
                     // TODO wywołanie funkcji aktualizującej UI
                     UpdateWk1UI()
