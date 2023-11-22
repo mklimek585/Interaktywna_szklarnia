@@ -16,8 +16,17 @@ class HomeViewModel : ViewModel() {
     private val _currentSet = MutableLiveData<String>()
     val currentSet: LiveData<String> get() = _currentSet
 
+    private val _currentMes = MutableLiveData<String>()
+    val currentMes: LiveData<String> get() = _currentMes
+    private val _currentWk1Mes = MutableLiveData<String>()
+    val currentWk1Mes: LiveData<String> get() = _currentWk1Mes
+    private val _currentWk2Mes = MutableLiveData<String>()
+    val currentWk2Mes: LiveData<String> get() = _currentWk2Mes
+
     private var currentSetListener: ValueEventListener? = null
     private var currentMeasurmentsListener: ValueEventListener? = null
+    private var currentWk1MeasurmentsListener: ValueEventListener? = null
+    private var currentWk2MeasurmentsListener: ValueEventListener? = null
 
     init {
         setupCurrentThresholdListener()
@@ -85,6 +94,7 @@ class HomeViewModel : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     // Przetwarzanie danych dla ogólnych pomiarów
+                    _currentMes.postValue(snapshot.value?.toString())
                     Log.i(TAG, "General Measurement: ${snapshot.value}")
                 }
             }
@@ -98,6 +108,7 @@ class HomeViewModel : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     // Przetwarzanie danych dla Workstation 1
+                    _currentWk1Mes.postValue(snapshot.value?.toString())
                     Log.i(TAG, "Workstation 1 Measurement: ${snapshot.value}")
                 }
             }
@@ -111,6 +122,7 @@ class HomeViewModel : ViewModel() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     // Przetwarzanie danych dla Workstation 2
+                    _currentWk2Mes.postValue(snapshot.value?.toString())
                     Log.i(TAG, "Workstation 2 Measurement: ${snapshot.value}")
                 }
             }
@@ -121,8 +133,11 @@ class HomeViewModel : ViewModel() {
         }
 
         currentMrmRef.addValueEventListener(generalListener)
+        currentMeasurmentsListener = generalListener
         currentWk1MrmRef.addValueEventListener(wk1Listener)
+        currentWk1MeasurmentsListener = wk1Listener
         currentWk2MrmRef.addValueEventListener(wk2Listener)
+        currentWk2MeasurmentsListener = wk2Listener
     }
 
 

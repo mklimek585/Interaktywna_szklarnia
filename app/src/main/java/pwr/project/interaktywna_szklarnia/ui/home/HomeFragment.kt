@@ -21,10 +21,14 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import pwr.project.interaktywna_szklarnia.Measurement
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentHomeBinding
 import pwr.project.interaktywna_szklarnia.ui.dashboard.DashboardViewModel
 import pwr.project.interaktywna_szklarnia.ui.settings.SettingsViewModel
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import pwr.project.interaktywna_szklarnia.Workstation
 
 
 class HomeFragment : Fragment() {
@@ -67,6 +71,37 @@ class HomeFragment : Fragment() {
             })
         })
 
+        viewModel.currentMes.observe(viewLifecycleOwner, Observer { json ->
+            val gson = Gson()
+            try {
+                val measurement = gson.fromJson(json, Measurement::class.java)
+                Log.i(TAG, "General Temp: ${measurement.temp}, Lux: ${measurement.lux}")
+            } catch (e: JsonSyntaxException) {
+                Log.e(TAG, "Error parsing JSON", e)
+            }
+        })
+
+
+        viewModel.currentWk1Mes.observe(viewLifecycleOwner, Observer { json ->
+            val gson = Gson()
+            try {
+                val workstation1 = gson.fromJson(json, Workstation::class.java)
+                Log.i(TAG, "Wk1 humidity: ${workstation1.Humidity}, Light: ${workstation1.Light}")
+            } catch (e: JsonSyntaxException) {
+                Log.e(TAG, "Error parsing JSON", e)
+            }
+        })
+
+
+        viewModel.currentWk2Mes.observe(viewLifecycleOwner, Observer { json ->
+            val gson2 = Gson()
+            try {
+                val workstation2 = gson2.fromJson(json, Workstation::class.java)
+                Log.i(TAG, "Wk2 humidity: ${workstation2.Humidity}, Light: ${workstation2.Light}")
+            } catch (e: JsonSyntaxException) {
+                Log.e(TAG, "Error parsing JSON", e)
+            }
+        })
 
 
 
