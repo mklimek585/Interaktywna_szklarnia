@@ -56,7 +56,6 @@ class HomeFragment : Fragment() {
     // (wilgotnosc1, swiatlo1, wilgotnosc2, swiatlo2, sloneczne, temp szklarni)
     var values = arrayOf(80,60,40,70,90,30) // Aktualne wartosc
 
-    // TODO threshold
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java) // Init
@@ -340,7 +339,6 @@ class HomeFragment : Fragment() {
                     for (value in currentSet) {
                         Log.i(TAG, "CurrentSet: $value")
                     }
-                    // TODO wywołanie funkcji aktualizującej UI
                     UpdateWk1UI()
                     UpdateWk2UI()
                     UpdateGeneralUI()
@@ -354,8 +352,8 @@ class HomeFragment : Fragment() {
             val gson = Gson()
             try {
                 val measurement = gson.fromJson(json, Measurement::class.java)
-                values[4] = measurement.lux
-                values[5] = measurement.temp
+                values[4] = measurement.lux.toInt()
+                values[5] = measurement.temp.toInt()
                 Log.i(TAG, "General Temp: ${measurement.temp}, Lux: ${measurement.lux}")
             } catch (e: JsonSyntaxException) {
                 Log.e(TAG, "Error parsing JSON", e)
@@ -367,8 +365,8 @@ class HomeFragment : Fragment() {
             val gson = Gson()
             try {
                 val workstation1 = gson.fromJson(json, Workstation::class.java)
-                values[0] = workstation1.Humidity
-                values[1] = workstation1.Light
+                values[0] = workstation1.Humidity.toInt()
+                values[1] = workstation1.Light.toInt()
                 Log.i(TAG, "Wk1 humidity: ${workstation1.Humidity}, Light: ${workstation1.Light}")
             } catch (e: JsonSyntaxException) {
                 Log.e(TAG, "Error parsing JSON", e)
@@ -380,8 +378,8 @@ class HomeFragment : Fragment() {
             val gson2 = Gson()
             try {
                 val workstation2 = gson2.fromJson(json, Workstation::class.java)
-                values[2] = workstation2.Humidity
-                values[3] = workstation2.Light
+                values[2] = workstation2.Humidity.toInt()
+                values[3] = workstation2.Light.toInt()
                 Log.i(TAG, "Wk2 humidity: ${workstation2.Humidity}, Light: ${workstation2.Light}")
             } catch (e: JsonSyntaxException) {
                 Log.e(TAG, "Error parsing JSON", e)

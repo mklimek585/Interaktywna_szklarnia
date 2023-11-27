@@ -48,7 +48,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
 
     implementation files('libs/mariadb-java-client-2.4.4.jar')
-    implementation 'com.google.firebase:firebase-database-ktx:20.0.4'// Dodana zależność MariaDB
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.4'
+    implementation 'androidx.preference:preference:1.2.0'// Dodana zależność MariaDB
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

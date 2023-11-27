@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import pwr.project.interaktywna_szklarnia.Sunlight
 import java.sql.Connection
 import java.sql.DriverManager
 import kotlin.math.log
