@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.stats.StatsFragment">
 
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="0dp"
