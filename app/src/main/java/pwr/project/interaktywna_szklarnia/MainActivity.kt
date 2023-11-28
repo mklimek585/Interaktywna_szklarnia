@@ -1,5 +1,6 @@
 package pwr.project.interaktywna_szklarnia
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyTheme()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,4 +39,24 @@ class MainActivity : AppCompatActivity() {
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+    private fun applyTheme() {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val isDarkTheme = sharedPref.getBoolean("DARK_THEME", false)
+        val themeId = if (isDarkTheme) {
+            R.style.Theme_Dark
+        } else {
+            R.style.Theme_Light
+        }
+        setTheme(themeId)
+    }
+
+    fun changeTheme(isDark: Boolean) {
+        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        sharedPref.edit().putBoolean("DARK_THEME", isDark).apply()
+
+        // Ponownie uruchom aktywność, aby zastosować nowy motyw
+        recreate()
+    }
+
 }

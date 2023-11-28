@@ -1,12 +1,15 @@
 package pwr.project.interaktywna_szklarnia
 
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.core.graphics.drawable.DrawableCompat.applyTheme
+import androidx.preference.PreferenceManager
 import pwr.project.interaktywna_szklarnia.databinding.ActivityLoginBinding
 
 import java.sql.Connection
@@ -22,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var databaseManager: DatabaseManager // CHWILOWO
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyTheme()
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
@@ -47,4 +51,17 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         this.finish()
     }
+
+    private fun applyTheme() {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)
+        val isDarkTheme = sharedPref.getBoolean("DARK_THEME", false)
+        val themeId = if (isDarkTheme) {
+            R.style.Theme_Dark
+        } else {
+            R.style.Theme_Light
+        }
+        setTheme(themeId)
+    }
+
+
 }

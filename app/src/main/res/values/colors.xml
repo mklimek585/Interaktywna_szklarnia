@@ -12,4 +12,24 @@
     <color name="Temp">#f8bb97</color>
     <color name="grey">#3C3C3C</color>
     <color name="green">#4e996f</color>
+
+    <color name="dark_primary">#121212</color> <!-- Ciemny szary, prawie czarny -->
+    <color name="dark_primaryDark">#000000</color> <!-- Czarny -->
+    <color name="dark_onPrimary">#FFFFFF</color> <!-- Biały -->
+
+    <color name="dark_secondary">#3700B3</color> <!-- Przykładowy ciemnofioletowy -->
+    <color name="dark_secondaryDark">#0000BA</color> <!-- Ciemniejszy odcień ciemnofioletowego -->
+    <color name="dark_onSecondary">#FFFFFF</color> <!-- Biały -->
+
+    <color name="dark_background">#121212</color> <!-- Taki sam jak colorPrimary -->
+    <color name="dark_onBackground">#FFFFFF</color> <!-- Biały -->
+
+    <color name="dark_surface">#121212</color> <!-- Taki sam jak colorPrimary -->
+    <color name="dark_onSurface">#FFFFFF</color> <!-- Biały -->
+
+    <color name="dark_error">#CF6679</color> <!-- Czerwony dla błędów -->
+    <color name="dark_onError">#FFFFFF</color> <!-- Biały -->
+
+    <color name="green_basic">#DBF5DC</color> <!-- Based green for background -->
+
 </resources>
