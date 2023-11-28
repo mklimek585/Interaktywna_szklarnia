@@ -18,6 +18,7 @@ import androidx.preference.PreferenceManager
 import pwr.project.interaktywna_szklarnia.MainActivity
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentSettingsBinding
+import kotlin.math.log
 
 
 class SettingsFragment : Fragment() {
@@ -40,6 +41,9 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.buttonLogout.setOnClickListener { view -> logoutFun(view)}
+        binding.buttonLanguage.setOnClickListener { view -> chooseLanguage(view)}
+
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(activity ?: throw IllegalStateException("Activity cannot be null"))
         val isDarkTheme = sharedPref.getBoolean("DARK_THEME", false)
 
@@ -53,8 +57,10 @@ class SettingsFragment : Fragment() {
         }
 
 
-
-
+    // TODO kolory trybu ciemnego
+        // TODO part2 na ciemnym tle wyswietla sie bialy popout - moze to ktorys kolor i tekst jest na bialo xpp
+        // TODO mb feedback?
+        // TODO opcja recznego wlaczania actywow
         return root
     }
 
