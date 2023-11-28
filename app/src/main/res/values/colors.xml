@@ -10,4 +10,6 @@
     <color name="Sun">#f2ed39</color>
     <color name="Water">#497dcb</color>
     <color name="Temp">#f8bb97</color>
+    <color name="grey">#3C3C3C</color>
+    <color name="green">#4e996f</color>
 </resources>
