@@ -2,11 +2,13 @@ package pwr.project.interaktywna_szklarnia
 
 import android.content.Context
 import android.graphics.Color
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.appcompat.widget.TintTypedArray.obtainStyledAttributes
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -38,6 +40,24 @@ class StatsAdapter(context: Context, data: List<StatsFragment.DataModel>) : Arra
         val dataModel = getItem(position)
         val lineData = LineData()
 
+        val typedValue = TypedValue()
+        val theme = context.theme
+        theme.resolveAttribute(R.attr.statsAxisColor, typedValue, true)
+        val axisColor = typedValue.data
+
+        theme.resolveAttribute(R.attr.statsTextColor, typedValue, true)
+        val textColor = typedValue.data
+
+        val xAxis = viewHolder.chart.xAxis
+        val yAxis = viewHolder.chart.axisLeft
+        xAxis.axisLineColor = axisColor
+        yAxis.axisLineColor = axisColor
+        xAxis.textColor = textColor
+        yAxis.textColor = textColor
+        val legend = viewHolder.chart.legend
+        legend.textColor = textColor
+
+
         if (dataModel != null) {
             val entries1 = ArrayList<Entry>()
             for ((x, y) in dataModel.data1) {
@@ -45,6 +65,7 @@ class StatsAdapter(context: Context, data: List<StatsFragment.DataModel>) : Arra
             }
             val lineDataSet1 = LineDataSet(entries1, dataModel.label1)
             lineDataSet1.color = dataModel.color1
+            lineDataSet1.valueTextColor = textColor // Ustawienie koloru tekstu wartości tutaj
             lineData.addDataSet(lineDataSet1)
 
             val entries2 = ArrayList<Entry>()
@@ -53,19 +74,16 @@ class StatsAdapter(context: Context, data: List<StatsFragment.DataModel>) : Arra
             }
             val lineDataSet2 = LineDataSet(entries2, dataModel.label2)
             lineDataSet2.color = dataModel.color2
+            lineDataSet2.valueTextColor = textColor // Ustawienie koloru tekstu wartości tutaj
             lineData.addDataSet(lineDataSet2)
         }
+
 
         viewHolder.chart.data = lineData
 
         // Ustawienie tytułu dla wykresu
         viewHolder.chartTitle.text = dataModel?.title ?: ""
 
-        // Dostosowanie wyglądu osi X i Y
-        val xAxis = viewHolder.chart.xAxis
-        val yAxis = viewHolder.chart.axisLeft
-        xAxis.axisLineColor = Color.BLACK
-        yAxis.axisLineColor = Color.BLACK
 
         xAxis.position = XAxis.XAxisPosition.BOTTOM // Ustawienie pozycji osi X na dole
         xAxis.setDrawLabels(true) // Włącz wyświetlanie etykiet na osi X

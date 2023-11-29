@@ -25,11 +25,19 @@
         <!-- Ustawienia dla status bar, navigation bar, i innych systemowych komponentów -->
         <item name="android:statusBarColor">@color/dark_primaryDark</item> <!-- Gorny pasek nad apka xpp -->
         <item name="android:navigationBarColor">@color/dark_background</item> <!-- dolny pasek pod bottom nav -->
-        <item name="android:windowBackground">@color/green_basic</item>  <!--Zmiana koloru tla!!! -->
+        <item name="android:windowBackground">@color/dark_3</item>  <!--Zmiana koloru tla!!! -->
 
         <!-- Ustawienia tekstu, ikon i innych elementów UI -->
         <item name="android:textColor">@color/dark_onBackground</item> <!-- Kolor textViews -->
         <item name="android:windowLightStatusBar">false</item> <!-- jasne ikony na status bar dla lepszej widoczności -->
+
+        <!-- Ogole -->
+        <item name="customBackgroundColor">@color/dark_3</item> <!-- Kolor tla layoutow we fragmentach -->
+        <item name="customBoardersOfLayouts">@color/boarders_of_layouts_dark</item> <!-- Obramowki dla layoutow -->
+
+        <!-- Wykresy -->
+        <item name="statsAxisColor">@color/white</item> <!-- Kolor osi wykresow -->
+        <item name="statsTextColor">@color/white</item> <!-- Podpisy wartosci osi -->
 
     </style>
 
@@ -45,8 +53,20 @@
 
         <item name="colorBackground">@color/dark_onBackground</item>
         <item name="colorOnBackground">@color/dark_onBackground</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
+        <!-- Ustawienia dla status bar, navigation bar, i innych systemowych komponentów -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item> <!-- Gorny pasek nad apka xpp -->
+        <item name="android:navigationBarColor">@color/dark_background</item> <!-- dolny pasek pod bottom nav -->
+        <item name="android:windowBackground">@color/green_basic</item>  <!--Zmiana koloru tla!!! -->
         <!-- Customize your theme here. -->
+        <item name="customBackgroundColor">#B0E6B2</item> <!-- Kolor tla layoutow we fragmentach -->
+        <item name="customBoardersOfLayouts">@color/boarders_of_layouts</item> <!-- Obramowki dla layoutow -->
+
+        <!-- Wykresy -->
+        <item name="statsAxisColor">@color/black</item> <!-- Kolor osi wykresow -->
+        <item name="statsTextColor">@color/black</item> <!-- Podpisy wartosci osi -->
+
     </style>
+
+
 </resources>

@@ -1,6 +1,7 @@
 package pwr.project.interaktywna_szklarnia.ui.settings
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.google.firebase.auth.FirebaseAuth
+import pwr.project.interaktywna_szklarnia.LoginActivity
 import pwr.project.interaktywna_szklarnia.MainActivity
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentSettingsBinding
@@ -43,6 +46,8 @@ class SettingsFragment : Fragment() {
 
         binding.buttonLogout.setOnClickListener { view -> logoutFun(view)}
         binding.buttonLanguage.setOnClickListener { view -> chooseLanguage(view)}
+        binding.buttonDeleteAccount.setOnClickListener { view -> deleteAccount(view)}
+
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(activity ?: throw IllegalStateException("Activity cannot be null"))
         val isDarkTheme = sharedPref.getBoolean("DARK_THEME", false)
@@ -70,9 +75,39 @@ class SettingsFragment : Fragment() {
     }
 
     fun logoutFun(view: View) {
-        Toast.makeText(context, "Logout", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
         Log.i(TAG, "Logout function")
+        FirebaseAuth.getInstance().signOut()
+
+        // Przekierowanie do LoginActivity
+        val intent = Intent(requireContext(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
+        activity?.finish()
     }
+
+    fun deleteAccount(view: View) { // TODO usuwanie konta
+        Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
+        val user = FirebaseAuth.getInstance().currentUser
+
+        user?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "User account deleted.")
+
+                // Przekierowanie do LoginActivity
+                val intent = Intent(requireContext(), LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+                activity?.finish()
+            } else {
+                // Nie udało się usunąć konta
+                Log.w(TAG, "Failed to delete user account", task.exception)
+            }
+        }
+    }
+
 
     fun chooseLanguage(view: View) {
         // Tworzenie nowego PopupMenu

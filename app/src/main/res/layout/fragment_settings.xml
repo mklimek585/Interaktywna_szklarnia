@@ -7,6 +7,65 @@
 
     tools:context=".ui.settings.SettingsFragment">
 
+    <TextView
+        android:id="@+id/tvLabelPreferences"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Preferencje"
+        android:textColor="@color/teal_700"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout10"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/settings_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout9"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout9"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelAccount">
+
+        <Button
+            android:id="@+id/buttonDeleteAccount"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:alpha="0"
+            android:text="Button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iconDelete"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/delete_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="Usuń konto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/iconDelete"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout9"
@@ -14,10 +73,10 @@
         android:layout_height="60dp"
         android:layout_marginTop="4dp"
         android:background="@drawable/settings_bg2"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout8"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout10"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout10"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
         <Button
             android:id="@+id/buttonLogout"
@@ -215,11 +274,10 @@
         android:id="@+id/constraintLayout5"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="4dp"
         android:background="@drawable/settings_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelPreferences">
 
         <Switch
             android:id="@+id/switch4"
@@ -230,6 +288,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvLabelAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Ustawienia konta"
+        android:textColor="@color/green"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout8"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout8" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

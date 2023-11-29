@@ -30,6 +30,19 @@
     <color name="dark_error">#CF6679</color> <!-- Czerwony dla błędów -->
     <color name="dark_onError">#FFFFFF</color> <!-- Biały -->
 
+    <!-- For light mode -->
     <color name="green_basic">#DBF5DC</color> <!-- Based green for background -->
+    <color name="green_basic_layouts">#B0E6B2</color>
 
+    <color name="boarders_of_layouts">#B1BCBE</color>
+
+    <!-- For dark mode -->
+    <color name="grey_basic">#DBF5DC</color> <!-- Based green for background -->
+    <color name="grey_basic_layouts">#B0E6B2</color>
+
+    <color name="boarders_of_layouts_dark">#800000</color>
+
+    <color name="dark_1">#1F1B24</color>
+    <color name="dark_2">#1F1A24</color>
+    <color name="dark_3">#332940</color>
 </resources>
