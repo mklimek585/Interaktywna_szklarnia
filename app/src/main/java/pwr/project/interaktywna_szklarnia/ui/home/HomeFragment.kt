@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
     private lateinit var barChartSun3: BarChart
 
     private val barWidthValue = 0.6f
-    private val lightMax = 1200f
+    private var lightMax = 1000f
 
     private lateinit var viewModel: HomeViewModel
 
@@ -78,15 +78,17 @@ class HomeFragment : Fragment() {
 
         barChartWater = binding.bcWATER
         barChartSun = binding.bcSUN
+        barChartWater2 = binding.bcWATER2
+        barChartSun2 = binding.bcSUN2
+        barChartSun3 = binding.bcSUN3
+        // TODO kolory textu w pozostalych dwoch
 
         // Obserwowanie LiveData
         viewModel.currentSet.observe(viewLifecycleOwner, Observer { setNumber ->
             Log.i(TAG, "Threshold set currently in use: $setNumber")
             viewModel.loadSet(setNumber, object : HomeViewModel.DataCallback {
                 override fun onDataLoaded(data: Array<Int>) {
-                    for (value in data) {
-                        Log.i(TAG, "Value: $value")
-                    }
+                    for (value in data) { Log.i(TAG, "Value: $value") }
                     currentSet[4] = data[0] // sun gen
                     currentSet[5] = data[1] // temp
                     currentSet[0] = data[2] // wk1 hum
@@ -97,52 +99,51 @@ class HomeFragment : Fragment() {
                         Log.i(TAG, "CurrentSet: $value")
                     }
                     UpdateWk1UI(axisColor, textColor)
-                    UpdateWk2UI()
-                    UpdateGeneralUI()
+                    UpdateWk2UI(axisColor, textColor)
+                    UpdateGeneralUI(axisColor, textColor)
                 }
             })
         })
-
-        viewModel.currentMes.observe(viewLifecycleOwner, Observer { json ->
-            val gson = Gson()
-            try {
-                val measurement = gson.fromJson(json, Measurement::class.java)
-                values[4] = measurement.lux.toInt()
-                values[5] = measurement.temp.toInt()
-                Log.i(TAG, "General Temp: ${measurement.temp}, Lux: ${measurement.lux}")
-            } catch (e: JsonSyntaxException) {
-                Log.e(TAG, "Error parsing JSON", e)
-            }
-        })
-
-
-        viewModel.currentWk1Mes.observe(viewLifecycleOwner, Observer { json ->
-            val gson = Gson()
-            try {
-                val workstation1 = gson.fromJson(json, Workstation::class.java)
-                values[0] = workstation1.Humidity.toInt()
-                values[1] = workstation1.Light.toInt()
-                Log.i(TAG, "Wk1 humidity: ${workstation1.Humidity}, Light: ${workstation1.Light}")
-            } catch (e: JsonSyntaxException) {
-                Log.e(TAG, "Error parsing JSON", e)
-            }
-        })
-
-
-        viewModel.currentWk2Mes.observe(viewLifecycleOwner, Observer { json ->
-            val gson2 = Gson()
-            try {
-                val workstation2 = gson2.fromJson(json, Workstation::class.java)
-                values[2] = workstation2.Humidity.toInt()
-                values[3] = workstation2.Light.toInt()
-                Log.i(TAG, "Wk2 humidity: ${workstation2.Humidity}, Light: ${workstation2.Light}")
-            } catch (e: JsonSyntaxException) {
-                Log.e(TAG, "Error parsing JSON", e)
-            }
-        })
+// TODO zrobienie by aktualne pomiary faktycznie sie zmienialy live
+//        viewModel.currentMes.observe(viewLifecycleOwner, Observer { json ->
+//            val gson = Gson()
+//            try {
+//                val measurement = gson.fromJson(json, Measurement::class.java)
+//                values[4] = measurement.lux.toInt()
+//                values[5] = measurement.temp.toInt()
+//                Log.i(TAG, "General Temp: ${measurement.temp}, Lux: ${measurement.lux}")
+//            } catch (e: JsonSyntaxException) {
+//                Log.e(TAG, "Error parsing JSON", e)
+//            }
+//        })
+//
+//
+//        viewModel.currentWk1Mes.observe(viewLifecycleOwner, Observer { json ->
+//            val gson = Gson()
+//            try {
+//                val workstation1 = gson.fromJson(json, Workstation::class.java)
+//                values[0] = workstation1.Humidity.toInt()
+//                values[1] = workstation1.Light.toInt()
+//                Log.i(TAG, "Wk1 humidity: ${workstation1.Humidity}, Light: ${workstation1.Light}")
+//            } catch (e: JsonSyntaxException) {
+//                Log.e(TAG, "Error parsing JSON", e)
+//            }
+//        })
+//
+//
+//        viewModel.currentWk2Mes.observe(viewLifecycleOwner, Observer { json ->
+//            val gson2 = Gson()
+//            try {
+//                val workstation2 = gson2.fromJson(json, Workstation::class.java)
+//                values[2] = workstation2.Humidity.toInt()
+//                values[3] = workstation2.Light.toInt()
+//                Log.i(TAG, "Wk2 humidity: ${workstation2.Humidity}, Light: ${workstation2.Light}")
+//            } catch (e: JsonSyntaxException) {
+//                Log.e(TAG, "Error parsing JSON", e)
+//            }
+//        })
 
         Log.i(TAG, "Values Array: ${values[0]}, ${values[1]}, ${values[2]}, ${values[3]}, ${values[4]}, ${values[5]}")
-
 
         return root
     }
@@ -241,7 +242,7 @@ class HomeFragment : Fragment() {
         barChartSun.invalidate() // Odśwież wykres
     }
 
-    fun UpdateWk2UI() {
+    fun UpdateWk2UI(axisColor: Int, textColor: Int) {
         barChartWater2 = binding.bcWATER2
         val entriesWater2 = arrayListOf(BarEntry(1f, values[2].toFloat()))
         val dataSetWater2 = BarDataSet(entriesWater2, "")
@@ -286,6 +287,7 @@ class HomeFragment : Fragment() {
         barChartWater2.invalidate() // Odśwież wykres
 
 ////////////////////////////////////////////////////////////////////////////
+        // TODO jak sa wieksze dane na wejsciu to sie nie buguje if dostosowujacy LightMax w zaleznosci od wartosci
         barChartSun2 = binding.bcSUN2
         val entriesSUN2 = arrayListOf(BarEntry(1f, values[3].toFloat()))
         val dataSetSUN2 = BarDataSet(entriesSUN2, "")
@@ -324,7 +326,7 @@ class HomeFragment : Fragment() {
         barChartSun2.invalidate() // Odśwież wykres
     }
 
-    fun UpdateGeneralUI() {
+    fun UpdateGeneralUI(axisColor: Int, textColor: Int) {
         barChartTemp = binding.bcTEMP
         val entriesTemp = arrayListOf(BarEntry(1f, values[5].toFloat()))
         val dataSetTemp = BarDataSet(entriesTemp, "")
