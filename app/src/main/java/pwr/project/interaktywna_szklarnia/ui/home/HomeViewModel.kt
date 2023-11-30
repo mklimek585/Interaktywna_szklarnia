@@ -13,9 +13,9 @@ import com.google.firebase.ktx.Firebase
 class HomeViewModel : ViewModel() {
     val TAG = "HomeVM"
     private val databaseRef = Firebase.database.reference
+    
     private val _currentSet = MutableLiveData<String>()
     val currentSet: LiveData<String> get() = _currentSet
-
     private val _currentMes = MutableLiveData<String>()
     val currentMes: LiveData<String> get() = _currentMes
     private val _currentWk1Mes = MutableLiveData<String>()
