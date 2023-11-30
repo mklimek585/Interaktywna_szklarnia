@@ -35,12 +35,14 @@
     <color name="green_basic_layouts">#B0E6B2</color>
 
     <color name="boarders_of_layouts">#B1BCBE</color>
+    <color name="button_light">#66AE69</color>
 
     <!-- For dark mode -->
     <color name="grey_basic">#DBF5DC</color> <!-- Based green for background -->
     <color name="grey_basic_layouts">#B0E6B2</color>
 
     <color name="boarders_of_layouts_dark">#800000</color>
+    <color name="button_dark">#800000</color>
 
     <color name="dark_1">#1F1B24</color>
     <color name="dark_2">#1F1A24</color>

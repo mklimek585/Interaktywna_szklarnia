@@ -6,4 +6,6 @@
 
     <attr name="statsAxisColor" format="color"/>
     <attr name="statsTextColor" format="color"/>
+    <attr name="buttonColor" format="color"/>
+
 </resources>

@@ -35,6 +35,11 @@
         <item name="customBackgroundColor">@color/dark_3</item> <!-- Kolor tla layoutow we fragmentach -->
         <item name="customBoardersOfLayouts">@color/boarders_of_layouts_dark</item> <!-- Obramowki dla layoutow -->
 
+        <item name="buttonColor">@color/button_dark</item> <!-- Kolor przyciskow -->
+
+        <!-- Dashboard -->
+
+
         <!-- Wykresy -->
         <item name="statsAxisColor">@color/white</item> <!-- Kolor osi wykresow -->
         <item name="statsTextColor">@color/white</item> <!-- Podpisy wartosci osi -->
@@ -61,6 +66,7 @@
         <!-- Customize your theme here. -->
         <item name="customBackgroundColor">#B0E6B2</item> <!-- Kolor tla layoutow we fragmentach -->
         <item name="customBoardersOfLayouts">@color/boarders_of_layouts</item> <!-- Obramowki dla layoutow -->
+        <item name="buttonColor">@color/button_light</item> <!-- Kolor przyciskow -->
 
         <!-- Wykresy -->
         <item name="statsAxisColor">@color/black</item> <!-- Kolor osi wykresow -->
