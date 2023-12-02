@@ -14,7 +14,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import pwr.project.interaktywna_szklarnia.R
 
-class StatsAdapter(context: Context, data: List<StatsViewModel.DataModel>) : ArrayAdapter<StatsViewModel.DataModel>(context, 0, data) {
+class StatsAdapter(context: Context, data: List<StatsViewModel.ChartsDataModel>) : ArrayAdapter<StatsViewModel.ChartsDataModel>(context, 0, data) {
     private class ViewHolder {
         lateinit var chart: LineChart
         lateinit var chartTitle: TextView

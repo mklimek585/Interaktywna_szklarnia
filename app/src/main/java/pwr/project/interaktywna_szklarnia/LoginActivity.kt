@@ -29,8 +29,6 @@ import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    //private lateinit var databaseManager: DatabaseManager // CHWILOWO
-
     private lateinit var auth: FirebaseAuth;
 
     private val TAG = "LoginActivity"
@@ -41,10 +39,9 @@ class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
+
         setContentView(view)
         setupRegisterLink(view)
-//        databaseManager = DatabaseManager()
-
         binding.btnLogin.setOnClickListener { view -> login(view) }
     }
 
@@ -55,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
         updateUI(currentUser)
     }
 
-    fun setupRegisterLink(view: View?) {
+    private fun setupRegisterLink(view: View?) {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

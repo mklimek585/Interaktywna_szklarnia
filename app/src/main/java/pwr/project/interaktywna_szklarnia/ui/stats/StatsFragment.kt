@@ -2,6 +2,7 @@ package pwr.project.interaktywna_szklarnia.ui.stats
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,9 +34,9 @@ class StatsFragment : Fragment() {
         val dataArrayTemp1 = arrayListOf(26.0, 25.1, 28.5, 30.3, 32.8, 30.9, 31)
         val dataArrayTemp2 = arrayListOf(25.2, 24.5, 26.5, 25.2, 28.8, 27.5, 26.2)
 
-        val data = ArrayList<StatsViewModel.DataModel>()
+        val data = ArrayList<StatsViewModel.ChartsDataModel>()
 
-        data.add(StatsViewModel.DataModel(
+        data.add(StatsViewModel.ChartsDataModel(
                 "Wilgotność",
                 "Stanowisko 1",
                 mapOf(
@@ -59,7 +60,7 @@ class StatsFragment : Fragment() {
                 ), Color.RED
             )
         )
-        data.add(StatsViewModel.DataModel("Natężenie światła",
+        data.add(StatsViewModel.ChartsDataModel("Natężenie światła",
             "Stanowisko 1",
             mapOf((1 to dataArrayLux1[0]) as Pair<Int, Double>,
                 (2 to dataArrayLux1[1]) as Pair<Int, Double>,
@@ -79,7 +80,7 @@ class StatsFragment : Fragment() {
                 (7 to dataArrayLux2[6]) as Pair<Int, Double>
             ), Color.RED
         ))
-        data.add(StatsViewModel.DataModel("Temperatura",
+        data.add(StatsViewModel.ChartsDataModel("Temperatura",
             "Stanowisko 1",
             mapOf((1 to dataArrayTemp1[0]) as Pair<Int, Double>,
                 (2 to dataArrayTemp1[1]) as Pair<Int, Double>,
@@ -102,6 +103,17 @@ class StatsFragment : Fragment() {
 
         val adapter = StatsAdapter(requireContext(), data)
         listView.adapter = adapter
+
+        statsViewModel.loadDataForTimePeriod(object : StatsViewModel.DataCallback {
+            override fun onDataLoaded(data: Array<StatsViewModel.DataModel>) {
+                data.forEach { dataModel ->
+                    // Przetwarzaj i używaj każdego dataModel
+                    Log.d("DataLog", "DataModel: $dataModel")
+                }
+                // Aktualizuj UI tutaj, np. przekazując dane do adaptera
+            }
+        }, 1)
+
 
         return root
     }
