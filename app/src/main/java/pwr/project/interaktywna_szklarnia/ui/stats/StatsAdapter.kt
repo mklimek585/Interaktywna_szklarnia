@@ -1,22 +1,20 @@
-package pwr.project.interaktywna_szklarnia
+package pwr.project.interaktywna_szklarnia.ui.stats
 
 import android.content.Context
-import android.graphics.Color
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.appcompat.widget.TintTypedArray.obtainStyledAttributes
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import pwr.project.interaktywna_szklarnia.ui.stats.StatsFragment
+import pwr.project.interaktywna_szklarnia.R
 
-class StatsAdapter(context: Context, data: List<StatsFragment.DataModel>) : ArrayAdapter<StatsFragment.DataModel>(context, 0, data) {
+class StatsAdapter(context: Context, data: List<StatsViewModel.DataModel>) : ArrayAdapter<StatsViewModel.DataModel>(context, 0, data) {
     private class ViewHolder {
         lateinit var chart: LineChart
         lateinit var chartTitle: TextView

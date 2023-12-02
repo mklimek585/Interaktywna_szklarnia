@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import pwr.project.interaktywna_szklarnia.StatsAdapter
 import pwr.project.interaktywna_szklarnia.databinding.FragmentStatsBinding
 
 class StatsFragment : Fragment() {
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
-
-    data class DataModel(val title: String, val label1: String, val data1: Map<Int, Double>, val color1: Int,
-                         val label2: String, val data2: Map<Int, Double>, val color2: Int)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val statsViewModel = ViewModelProvider(this).get(StatsViewModel::class.java)
@@ -37,29 +33,33 @@ class StatsFragment : Fragment() {
         val dataArrayTemp1 = arrayListOf(26.0, 25.1, 28.5, 30.3, 32.8, 30.9, 31)
         val dataArrayTemp2 = arrayListOf(25.2, 24.5, 26.5, 25.2, 28.8, 27.5, 26.2)
 
-        val data = ArrayList<DataModel>()
+        val data = ArrayList<StatsViewModel.DataModel>()
 
-        data.add(DataModel("Wilgotność",
-            "Stanowisko 1",
-            mapOf((1 to dataArrayWat1[0]) as Pair<Int, Double>,
-                (2 to dataArrayWat1[1]) as Pair<Int, Double>,
-                (3 to dataArrayWat1[2]) as Pair<Int, Double>,
-                (4 to dataArrayWat1[3]) as Pair<Int, Double>,
-                (5 to dataArrayWat1[4]) as Pair<Int, Double>,
-                (6 to dataArrayWat1[5]) as Pair<Int, Double>,
-                (7 to dataArrayWat1[6]) as Pair<Int, Double>
-            ), Color.BLUE,
-            "Stanowisko 2",
-            mapOf((1 to dataArrayWat2[0]) as Pair<Int, Double>,
-                (2 to dataArrayWat2[1]) as Pair<Int, Double>,
-                (3 to dataArrayWat2[2]) as Pair<Int, Double>,
-                (4 to dataArrayWat2[3]) as Pair<Int, Double>,
-                (5 to dataArrayWat2[4]) as Pair<Int, Double>,
-                (6 to dataArrayWat2[5]) as Pair<Int, Double>,
-                (7 to dataArrayWat2[6]) as Pair<Int, Double>
-            ), Color.RED
-        ))
-        data.add(DataModel("Natężenie światła",
+        data.add(StatsViewModel.DataModel(
+                "Wilgotność",
+                "Stanowisko 1",
+                mapOf(
+                    (1 to dataArrayWat1[0]) as Pair<Int, Double>,
+                    (2 to dataArrayWat1[1]) as Pair<Int, Double>,
+                    (3 to dataArrayWat1[2]) as Pair<Int, Double>,
+                    (4 to dataArrayWat1[3]) as Pair<Int, Double>,
+                    (5 to dataArrayWat1[4]) as Pair<Int, Double>,
+                    (6 to dataArrayWat1[5]) as Pair<Int, Double>,
+                    (7 to dataArrayWat1[6]) as Pair<Int, Double>
+                ), Color.BLUE,
+                "Stanowisko 2",
+                mapOf(
+                    (1 to dataArrayWat2[0]) as Pair<Int, Double>,
+                    (2 to dataArrayWat2[1]) as Pair<Int, Double>,
+                    (3 to dataArrayWat2[2]) as Pair<Int, Double>,
+                    (4 to dataArrayWat2[3]) as Pair<Int, Double>,
+                    (5 to dataArrayWat2[4]) as Pair<Int, Double>,
+                    (6 to dataArrayWat2[5]) as Pair<Int, Double>,
+                    (7 to dataArrayWat2[6]) as Pair<Int, Double>
+                ), Color.RED
+            )
+        )
+        data.add(StatsViewModel.DataModel("Natężenie światła",
             "Stanowisko 1",
             mapOf((1 to dataArrayLux1[0]) as Pair<Int, Double>,
                 (2 to dataArrayLux1[1]) as Pair<Int, Double>,
@@ -79,7 +79,7 @@ class StatsFragment : Fragment() {
                 (7 to dataArrayLux2[6]) as Pair<Int, Double>
             ), Color.RED
         ))
-        data.add(DataModel("Temperatura",
+        data.add(StatsViewModel.DataModel("Temperatura",
             "Stanowisko 1",
             mapOf((1 to dataArrayTemp1[0]) as Pair<Int, Double>,
                 (2 to dataArrayTemp1[1]) as Pair<Int, Double>,

@@ -63,43 +63,20 @@ class DashboardFragment : Fragment() {
             onRadioButtonClicked(radioButton)
         }
 
-        binding.btnPlusPar1.setOnClickListener { view ->
-            IncreasePar1(view)
-        }
-        binding.btnPlusPar2.setOnClickListener { view ->
-            IncreasePar2(view)
-        }
-        binding.btnPlusPar3.setOnClickListener { view ->
-            IncreasePar3(view)
-        }
-        binding.btnPlusPar4.setOnClickListener { view ->
-            IncreasePar4(view)
-        }
-        binding.btnPlusPar5.setOnClickListener { view ->
-            IncreasePar5(view)
-        }
-        binding.btnPlusPar6.setOnClickListener { view ->
-            IncreasePar6(view)
-        }
+        binding.btnPlusPar1.setOnClickListener { view -> IncreasePar1(view) }
+        binding.btnPlusPar2.setOnClickListener { view -> IncreasePar2(view) }
+        binding.btnPlusPar3.setOnClickListener { view -> IncreasePar3(view) }
+        binding.btnPlusPar4.setOnClickListener { view -> IncreasePar4(view) }
+        binding.btnPlusPar5.setOnClickListener { view -> IncreasePar5(view) }
+        binding.btnPlusPar6.setOnClickListener { view -> IncreasePar6(view) }
 
-        binding.btnMinusPar1.setOnClickListener { view ->
-            DecreasePar1(view)
-        }
-        binding.btnMinusPar2.setOnClickListener { view ->
-            DecreasePar2(view)
-        }
-        binding.btnMinusPar3.setOnClickListener { view ->
-            DecreasePar3(view)
-        }
-        binding.btnMinusPar4.setOnClickListener { view ->
-            DecreasePar4(view)
-        }
-        binding.btnMinusPar5.setOnClickListener { view ->
-            DecreasePar5(view)
-        }
-        binding.btnMinusPar6.setOnClickListener { view ->
-            DecreasePar6(view)
-        }
+        binding.btnMinusPar1.setOnClickListener { view -> DecreasePar1(view) }
+        binding.btnMinusPar2.setOnClickListener { view -> DecreasePar2(view) }
+        binding.btnMinusPar3.setOnClickListener { view -> DecreasePar3(view) }
+        binding.btnMinusPar4.setOnClickListener { view -> DecreasePar4(view) }
+        binding.btnMinusPar5.setOnClickListener { view -> DecreasePar5(view) }
+        binding.btnMinusPar6.setOnClickListener { view -> DecreasePar6(view) }
+
         return root
     }
 
