@@ -25,45 +25,54 @@ class StatsViewModel : ViewModel() {
         val lightWk2_avg: Double? = null, val lux_avg: Double? = null, val temp_avg: Double? = null
     )
 
-    fun loadDataForTimePeriod(callback: (ArrayList<DataModel>) -> Unit, timeRange: TimeRange) {
+    fun loadDataForTimePeriod(callback: (ArrayList<DataModel>, Boolean) -> Unit, timeRange: TimeRange) {
         val dataRef = databaseRef.child("Szklarnia/Statistics")
-        val now = LocalDateTime.now() // Użyj czasu lokalnego
-        val zoneId = ZoneId.systemDefault() // Pobierz strefę czasową systemu
-        val zonedDateTime = ZonedDateTime.of(now, zoneId) // Konwersja na ZonedDateTime
-        val endDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime() // Konwersja na czas UTC
-        var days = 0
-        Log.d("DataLog", "TimeRange: ${timeRange}")
-        days = when(timeRange) {
-            TimeRange.DAY -> 1
-            TimeRange.WEEK -> 7
-            TimeRange.MONTH -> 30
+        val now = LocalDateTime.now(ZoneId.systemDefault()) // Użyj czasu lokalnego
+        val zonedNow = ZonedDateTime.of(now, ZoneId.systemDefault()) // Konwersja na ZonedDateTime
+        val endDate = zonedNow.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime() // Konwersja na czas UTC
+
+        when (timeRange) {
+            TimeRange.DAY -> {
+                dataRef.orderByKey().limitToLast(24)
+                    .addListenerForSingleValueEvent(createValueEventListener(callback, now, 1))
+            }
+            TimeRange.WEEK -> {
+                dataRef.addListenerForSingleValueEvent(createValueEventListener(callback, now, 7))
+            }
+            TimeRange.MONTH -> {
+                dataRef.addListenerForSingleValueEvent(createValueEventListener(callback, now, 30))
+            }
         }
+    }
 
-        val startDate = endDate.minusDays(days.toLong())
-
-        dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun createValueEventListener(
+        callback: (ArrayList<DataModel>, Boolean) -> Unit,
+        now: LocalDateTime,
+        daysBack: Long
+    ): ValueEventListener {
+        return object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val result = ArrayList<DataModel>()
+                var lastMeasurementDateTime: LocalDateTime? = null
 
                 dataSnapshot.children.forEach { snapshot ->
-                    val timestamp = snapshot.key ?: return@forEach
-                    try {
-                        val dateTime = LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_DATE_TIME)
-                        if (dateTime in startDate..endDate) {
-                            snapshot.getValue(DataModel::class.java)?.let {
-                                result.add(it)
-                            }
+                    val dateTime = LocalDateTime.parse(snapshot.key, DateTimeFormatter.ISO_DATE_TIME)
+                    if (dateTime.isAfter(now.minusDays(daysBack))) {
+                        snapshot.getValue(DataModel::class.java)?.let {
+                            result.add(it)
+                            lastMeasurementDateTime = dateTime
                         }
-                    } catch (e: DateTimeParseException) {
-                        Log.e("DataLog", "Error parsing date: ${e.message}")
                     }
                 }
-                callback(result)
+
+                val isDataUpToDate = lastMeasurementDateTime?.isAfter(now.minusDays(daysBack)) ?: false
+                callback(result, isDataUpToDate)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e("DataLog", "Firebase error: ${databaseError.message}")
             }
-        })
+        }
     }
+
 }

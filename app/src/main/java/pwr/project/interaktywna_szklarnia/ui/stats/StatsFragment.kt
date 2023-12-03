@@ -27,13 +27,18 @@ class StatsFragment : Fragment() {
         // Określ zakres czasowy
         val timeRange = TimeRange.DAY // lub inny zakres, zależnie od potrzeb
 
-        statsViewModel.loadDataForTimePeriod({ rawData ->
+        statsViewModel.loadDataForTimePeriod({ rawData, isDataUpToDate ->
             rawData.forEach { dataModel ->
                 Log.d("DataLog", "DataModel: $dataModel")
             }
 
-            val adapter = StatsAdapter(requireContext(), rawData, timeRange)
-            listView.adapter = adapter
+            if(isDataUpToDate) {
+                val adapter = StatsAdapter(requireContext(), rawData, timeRange)
+                listView.adapter = adapter
+            }
+            else {
+                Log.e("DataLog", "Downloaded data is not up to date")
+            }
         }, timeRange)
 
         return root
