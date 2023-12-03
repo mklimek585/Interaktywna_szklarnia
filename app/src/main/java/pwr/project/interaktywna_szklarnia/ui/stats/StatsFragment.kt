@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import pwr.project.interaktywna_szklarnia.databinding.FragmentStatsBinding
+import pwr.project.interaktywna_szklarnia.ui.settings.SettingsFragment
 
 class StatsFragment : Fragment() {
     private var _binding: FragmentStatsBinding? = null
@@ -23,7 +25,17 @@ class StatsFragment : Fragment() {
         val listView: ListView = binding.listView
 
         // Określ zakres czasowy
-        val timeRange = TimeRange.WEEK // lub inny zakres, zależnie od potrzeb
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val currentRange = sharedPref.getString(SettingsFragment.KEY_TIME_RANGE, SettingsFragment.DEFAULT_TIME_RANGE)
+        val timeRange = when (currentRange) {
+            "DAY" -> TimeRange.DAY // lub inny zakres, zależnie od potrzeb
+            "WEEK" -> TimeRange.WEEK // lub inny zakres, zależnie od potrzeb
+            else -> {
+                Log.e("Settings-Stats", "There is no correct TimeRange")
+                TimeRange.DAY // Domyślny zakres czasu
+            }
+        }
+
 
         statsViewModel.loadDataForTimePeriod({ rawData, isDataUpToDate ->
             rawData.forEach { dataModel ->

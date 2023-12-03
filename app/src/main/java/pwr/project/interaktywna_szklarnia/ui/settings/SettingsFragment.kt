@@ -47,7 +47,8 @@ class SettingsFragment : Fragment() {
         binding.buttonLogout.setOnClickListener { view -> logoutFun(view)}
         binding.buttonLanguage.setOnClickListener { view -> chooseLanguage(view)}
         binding.buttonDeleteAccount.setOnClickListener { view -> deleteAccount(view)}
-
+        binding.buttonTimeRange.setOnClickListener { view -> chooseRangeTime(view) }
+        initializeTimeRangeDisplay()
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(activity ?: throw IllegalStateException("Activity cannot be null"))
         val isDarkTheme = sharedPref.getBoolean("DARK_THEME", false)
@@ -108,6 +109,74 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    // Definicje kluczy i wartości domyślnych
+    companion object {
+        const val KEY_TIME_RANGE = "TIME_RANGE"
+        const val DEFAULT_TIME_RANGE = "DAY"
+    }
+
+    // W funkcji inicjalizującej fragment/aktywność
+    fun initializeTimeRangeDisplay() {
+        val tvTimeRangeDesc = binding.tvTimeRangeDesc
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val currentRange = sharedPref.getString(KEY_TIME_RANGE, DEFAULT_TIME_RANGE)
+
+        tvTimeRangeDesc.text = when (currentRange) {
+            "DAY" -> "Dzień"
+            "WEEK" -> "Tydzień"
+            else -> "Dzień"
+        }
+    }
+
+    fun onTimeRangeSelected(selectedRange: String) {
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        sharedPref.edit().putString(KEY_TIME_RANGE, selectedRange).apply()
+
+        val tvTimeRangeDesc = binding.tvTimeRangeDesc
+        tvTimeRangeDesc.text = when (selectedRange) {
+            "DAY" -> "Dzień"
+            "WEEK" -> "Tydzień"
+            else -> "Dzień"
+        }
+    }
+
+
+    fun chooseRangeTime(view: View) {
+        val sharedPref = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+        val currentRange = sharedPref?.getString(KEY_TIME_RANGE, DEFAULT_TIME_RANGE)
+
+        val popup = PopupMenu(context, view)
+        popup.menuInflater.inflate(R.menu.settings_stats_menu, popup.menu)
+
+        // Zaznacz aktualny zakres czasowy w menu
+        val currentMenuItemId = when (currentRange) {
+            "DAY" -> R.id.item_day
+            "WEEK" -> R.id.item_week
+            else -> R.id.item_day
+        }
+        popup.menu.findItem(currentMenuItemId).isChecked = true
+
+        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.item_day -> {
+                    sharedPref?.edit()?.putString(KEY_TIME_RANGE, "DAY")?.apply()
+                    Toast.makeText(context, "Wybrano dzień", Toast.LENGTH_SHORT).show()
+                    onTimeRangeSelected("DAY")
+                    true
+                }
+                R.id.item_week -> {
+                    sharedPref?.edit()?.putString(KEY_TIME_RANGE, "WEEK")?.apply()
+                    Toast.makeText(context, "Wybrano tydzień", Toast.LENGTH_SHORT).show()
+                    onTimeRangeSelected("WEEK")
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popup.show()
+    }
 
     fun chooseLanguage(view: View) {
         // Tworzenie nowego PopupMenu
@@ -115,7 +184,6 @@ class SettingsFragment : Fragment() {
         // Inflating menu z pliku XML
         popup.menuInflater.inflate(R.menu.settings_menu, popup.menu)
 
-        // Ustawienie OnClickListener dla elementów menu
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.item_lang_pl -> {
@@ -137,62 +205,3 @@ class SettingsFragment : Fragment() {
     // TODO popout menu
     // TODO popout activity o braku internetu
 }
-
-// Zdefiniuj motywy w pliku styles.xml:
-//Upewnij się, że masz zdefiniowane dwa motywy w res/values/styles.xml - jeden dla jasnego motywu i jeden dla ciemnego.
-//Dodaj przełącznik do interfejsu użytkownika:
-//Umieść przełącznik (Switch) w layoutcie swojej aktywności, gdzie użytkownicy będą mogli zmieniać motywy.
-//Obsłuż zdarzenie zmiany przełącznika:
-//W metodzie onCreate() Twojej aktywności ustaw OnCheckedChangeListener na przełączniku, aby reagować na zmiany jego stanu.
-//Zapisz stan przełącznika do preferencji:
-//Gdy stan przełącznika się zmienia, zapisz nowy stan do preferencji dzielonych (SharedPreferences), a następnie zastosuj odpowiedni motyw.
-//Stosuj motyw przy uruchomieniu aplikacji:
-//W onCreate() Twojej aktywności lub w innej metodzie inicjalizacji, wczytaj zapisany motyw z preferencji i ustaw go przed wywołaniem setContentView().
-//Oto przykładowy kod, który pokazuje, jak to zrobić:
-//
-//kotlin
-//Copy code
-//class SettingsActivity : AppCompatActivity() {
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        // Stosuj motyw przed setContentView()
-//        applyTheme(getSavedTheme())
-//
-//        setContentView(R.layout.activity_settings)
-//
-//        // Znajdź przełącznik w layoutcie
-//        val themeSwitch: Switch = findViewById(R.id.themeSwitch)
-//
-//        // Ustaw stan przełącznika na podstawie zapisanych preferencji
-//        themeSwitch.isChecked = getSavedTheme() == R.style.DarkTheme
-//
-//        // Ustaw listener na zmianę stanu przełącznika
-//        themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                saveTheme(R.style.DarkTheme)
-//            } else {
-//                saveTheme(R.style.LightTheme)
-//            }
-//            // Ponowne uruchomienie aktywności, aby zastosować zmianę motywu
-//            recreate()
-//        }
-//    }
-//
-//    private fun applyTheme(themeId: Int) {
-//        setTheme(themeId)
-//    }
-//
-//    private fun saveTheme(themeId: Int) {
-//        val prefs = getSharedPreferences("AppSettingsPrefs", Context.MODE_PRIVATE)
-//        val editor = prefs.edit()
-//        editor.putInt("AppTheme", themeId)
-//        editor.apply()
-//    }
-//
-//    private fun getSavedTheme(): Int {
-//        val prefs = getSharedPreferences("AppSettingsPrefs", Context.MODE_PRIVATE)
-//        return prefs.getInt("AppTheme", R.style.LightTheme) // Domyślnie jasny motyw
-//    }
-//}
