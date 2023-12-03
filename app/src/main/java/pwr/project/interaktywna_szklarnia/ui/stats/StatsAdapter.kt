@@ -1,6 +1,7 @@
 package pwr.project.interaktywna_szklarnia.ui.stats
 
 import android.content.Context
+import android.graphics.Color
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,74 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import pwr.project.interaktywna_szklarnia.R
+import java.util.logging.Logger.global
 
-class StatsAdapter(context: Context, data: List<StatsViewModel.ChartsDataModel>) : ArrayAdapter<StatsViewModel.ChartsDataModel>(context, 0, data) {
+class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.DataModel>, private val timeRange: TimeRange
+) : ArrayAdapter<StatsViewModel.ChartsDataModel>(context, 0) {
+
     private class ViewHolder {
         lateinit var chart: LineChart
         lateinit var chartTitle: TextView
     }
+
+    var numberOfMeasurements = 0
+    init {
+        // Przetwarzanie danych
+        val processedData = processData(rawData, timeRange)
+        addAll(processedData)
+
+        // Ustawienie liczby pomiarów
+        numberOfMeasurements = rawData.size
+    }
+
+    companion object {
+        private fun processData(rawData: List<StatsViewModel.DataModel>, timeRange: TimeRange): List<StatsViewModel.ChartsDataModel> {
+            val generalData = ArrayList<StatsViewModel.ChartsDataModel>()
+
+            generalData.add(StatsViewModel.ChartsDataModel(
+                title = "Wilgotność",
+                label1 = "Stanowisko 1 - [%]",
+                data1 = rawData.mapIndexed { index, data -> index to (data.humWk1_avg ?: 0.0) }.toMap(),
+                color1 = Color.BLUE,
+                label2 = "Stanowisko 2 - [%]",
+                data2 = rawData.mapIndexed { index, data -> index to (data.humWk2_avg ?: 0.0) }.toMap(),
+                color2 = Color.RED
+            ))
+
+            generalData.add(StatsViewModel.ChartsDataModel(
+                title = "Natężenie światła",
+                label1 = "Stanowisko 1 - [lx]",
+                data1 = rawData.mapIndexed { index, data -> index to (data.lightWk1_avg ?: 0.0) }.toMap(),
+                color1 = Color.GREEN,
+                label2 = "Stanowisko 2 - [lx]",
+                data2 = rawData.mapIndexed { index, data -> index to (data.lightWk2_avg ?: 0.0) }.toMap(),
+                color2 = Color.YELLOW
+            ))
+
+            generalData.add(StatsViewModel.ChartsDataModel(
+                title = "Temperatura",
+                label1 = "Temperatura - [℃]",
+                data1 = rawData.mapIndexed { index, data -> index to (data.temp_avg ?: 0.0) }.toMap(),
+                color1 = Color.MAGENTA,
+                label2 = "Stanowisko 2",
+                data2 = rawData.mapIndexed { index, data -> index to (data.temp_avg ?: 0.0) }.toMap(),
+                color2 = Color.CYAN
+            ))
+
+            generalData.add(StatsViewModel.ChartsDataModel(
+                title = "Światło słoneczne",
+                label1 = "Natężenie światła - [lx]",
+                data1 = rawData.mapIndexed { index, data -> index to (data.lux_avg ?: 0.0) }.toMap(),
+                color1 = Color.CYAN,
+                label2 = "Stanowisko 2",
+                data2 = rawData.mapIndexed { index, data -> index to (data.temp_avg ?: 0.0) }.toMap(),
+                color2 = Color.CYAN
+            ))
+
+            return generalData
+        }
+    }
+
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
@@ -46,6 +109,7 @@ class StatsAdapter(context: Context, data: List<StatsViewModel.ChartsDataModel>)
         theme.resolveAttribute(R.attr.statsTextColor, typedValue, true)
         val textColor = typedValue.data
 
+        // Color from theme
         val xAxis = viewHolder.chart.xAxis
         val yAxis = viewHolder.chart.axisLeft
         xAxis.axisLineColor = axisColor
@@ -55,7 +119,6 @@ class StatsAdapter(context: Context, data: List<StatsViewModel.ChartsDataModel>)
         val legend = viewHolder.chart.legend
         legend.textColor = textColor
 
-
         if (dataModel != null) {
             val entries1 = ArrayList<Entry>()
             for ((x, y) in dataModel.data1) {
@@ -63,47 +126,64 @@ class StatsAdapter(context: Context, data: List<StatsViewModel.ChartsDataModel>)
             }
             val lineDataSet1 = LineDataSet(entries1, dataModel.label1)
             lineDataSet1.color = dataModel.color1
-            lineDataSet1.valueTextColor = textColor // Ustawienie koloru tekstu wartości tutaj
             lineData.addDataSet(lineDataSet1)
 
-            val entries2 = ArrayList<Entry>()
-            for ((x, y) in dataModel.data2) {
-                entries2.add(Entry(x.toFloat(), y.toFloat()))
+            // Sprawdź tytuł wykresu, aby zdecydować, czy dodać drugi zestaw danych
+            if (dataModel.title != "Światło słoneczne" && dataModel.title != "Temperatura") {
+                val entries2 = ArrayList<Entry>()
+                for ((x, y) in dataModel.data2) {
+                    entries2.add(Entry(x.toFloat(), y.toFloat()))
+                }
+                val lineDataSet2 = LineDataSet(entries2, dataModel.label2)
+                lineDataSet2.color = dataModel.color2
+                lineData.addDataSet(lineDataSet2)
             }
-            val lineDataSet2 = LineDataSet(entries2, dataModel.label2)
-            lineDataSet2.color = dataModel.color2
-            lineDataSet2.valueTextColor = textColor // Ustawienie koloru tekstu wartości tutaj
-            lineData.addDataSet(lineDataSet2)
         }
 
 
         viewHolder.chart.data = lineData
-
-        // Ustawienie tytułu dla wykresu
         viewHolder.chartTitle.text = dataModel?.title ?: ""
 
+        configureXAxis(xAxis, timeRange)
 
-        xAxis.position = XAxis.XAxisPosition.BOTTOM // Ustawienie pozycji osi X na dole
-        xAxis.setDrawLabels(true) // Włącz wyświetlanie etykiet na osi X
-        xAxis.setDrawAxisLine(true) // Włącz rysowanie linii osi X
-        xAxis.axisLineWidth = 2f // Pogrubienie rysowania osi X
-        xAxis.setDrawGridLines(false) // Wyłącz rysowanie linii siatki osi X
-
-        yAxis.setDrawLabels(true) // Włącz wyświetlanie etykiet na osi Y
-        yAxis.setDrawAxisLine(true) // Włącz rysowanie linii osi Y
-        yAxis.axisLineWidth = 2f // Pogrubienie rysowania osi Y
-        yAxis.gridLineWidth = 1f // Pogrubienie rysowania linii siatki osi Y
+        yAxis.setDrawLabels(true)
+        yAxis.setDrawAxisLine(true)
+        yAxis.axisLineWidth = 2f
+        yAxis.gridLineWidth = 1f
 
         val rightAxis = viewHolder.chart.axisRight
-        rightAxis.setDrawLabels(false) // Wyłącz wyświetlanie etykiet na osi Y po prawej stronie
-        rightAxis.setDrawAxisLine(false) // Wyłącz rysowanie linii osi Y po prawej stronie
+        rightAxis.setDrawLabels(false)
+        rightAxis.setDrawAxisLine(false)
 
-        // Wyłącz wyświetlanie opisu (description label)
         viewHolder.chart.description.isEnabled = false
 
         viewHolder.chart.invalidate()
 
         return view
     }
+
+    private fun configureXAxis(xAxis: XAxis, timeRange: TimeRange) {
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawLabels(true)
+        xAxis.setDrawAxisLine(true)
+        xAxis.axisLineWidth = 2f
+        xAxis.setDrawGridLines(false)
+
+        when(timeRange) {
+            TimeRange.DAY -> {
+                // Formatuj oś X dla danych dziennych
+            }
+            TimeRange.WEEK -> {
+                // Formatuj oś X dla danych tygodniowych
+            }
+            TimeRange.MONTH -> {
+                // Formatuj oś X dla danych miesięcznych
+            }
+        }
+    }
+}
+
+enum class TimeRange {
+    DAY, WEEK, MONTH
 }
 

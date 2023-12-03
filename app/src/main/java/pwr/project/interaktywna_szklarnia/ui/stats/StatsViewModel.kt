@@ -7,7 +7,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -24,37 +23,37 @@ class StatsViewModel : ViewModel() {
         val lightWk2_avg: Double? = null, val lux_avg: Double? = null, val temp_avg: Double? = null
     )
 
-
-    interface DataCallback { fun onDataLoaded(data: Array<DataModel>) }
-
-    val dataContainer = mutableListOf<Float>()
-
-
-    fun loadDataForTimePeriod(callback: DataCallback, days: Int) {
+    fun loadDataForTimePeriod(callback: (ArrayList<DataModel>) -> Unit, timeRange: TimeRange) {
         val dataRef = databaseRef.child("Szklarnia/Statistics")
         val endDate = LocalDateTime.now(ZoneOffset.UTC)
+        var days = 0
+        Log.d("DataLog", "TimeRange: ${timeRange}")
+        days = when(timeRange) {
+            TimeRange.DAY -> 1
+            TimeRange.WEEK -> 7
+            TimeRange.MONTH -> 30
+        }
+
         val startDate = endDate.minusDays(days.toLong())
 
         dataRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val result = mutableListOf<DataModel>()
+                val result = ArrayList<DataModel>()
 
                 dataSnapshot.children.forEach { snapshot ->
+                    val timestamp = snapshot.key ?: return@forEach
                     try {
-                        val timestamp = snapshot.key ?: return@forEach
                         val dateTime = LocalDateTime.parse(timestamp, DateTimeFormatter.ISO_DATE_TIME)
-
                         if (dateTime in startDate..endDate) {
-                            val dataModel = snapshot.getValue(DataModel::class.java)
-                            if (dataModel != null) {
-                                result.add(dataModel)
+                            snapshot.getValue(DataModel::class.java)?.let {
+                                result.add(it)
                             }
                         }
                     } catch (e: DateTimeParseException) {
                         Log.e("DataLog", "Error parsing date: ${e.message}")
                     }
                 }
-                callback.onDataLoaded(result.toTypedArray())
+                callback(result)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -62,7 +61,4 @@ class StatsViewModel : ViewModel() {
             }
         })
     }
-
-
-
 }
