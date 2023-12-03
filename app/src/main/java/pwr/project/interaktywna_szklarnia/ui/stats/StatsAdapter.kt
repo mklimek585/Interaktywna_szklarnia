@@ -91,9 +91,8 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                 val humidityData2 = mutableMapOf<Int, Double>()
 
                 weekHumidityData.forEachIndexed { index, dayData ->
-                    val dayIndex = index * 24 // Przykład, gdzie każdy dzień ma 24 pomiary
-                    humidityData1[dayIndex] = dayData.second.first
-                    humidityData2[dayIndex] = dayData.second.second
+                    humidityData1[index] = dayData.second.first
+                    humidityData2[index] = dayData.second.second
                 }
                 generalData.add(StatsViewModel.ChartsDataModel(
                     title = "Wilgotność w tygodniu",
@@ -105,14 +104,13 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                     color2 = Color.RED
                 ))
 
-                val weekLightData = prepareWeekLightxData(rawData)
+                val weekLightData = prepareWeekLightData(rawData)
                 val lightData1 = mutableMapOf<Int, Double>()
                 val lightData2 = mutableMapOf<Int, Double>()
 
                 weekLightData.forEachIndexed { index, dayData ->
-                    val dayIndex = index * 24 // Przykład, gdzie każdy dzień ma 24 pomiary
-                    lightData1[dayIndex] = dayData.second.first
-                    lightData2[dayIndex] = dayData.second.second
+                    lightData1[index] = dayData.second.first
+                    lightData2[index] = dayData.second.second
                 }
 
                 generalData.add(StatsViewModel.ChartsDataModel(
@@ -129,8 +127,7 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                 val tempData = mutableMapOf<Int, Double>()
 
                 weekTempData.forEachIndexed { index, dayData ->
-                    val dayIndex = index * 24 // Przykład, gdzie każdy dzień ma 24 pomiary
-                    tempData[dayIndex] = dayData.second
+                    tempData[index] = dayData.second
                 }
 
                 generalData.add(StatsViewModel.ChartsDataModel(
@@ -148,8 +145,7 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
             val luxData = mutableMapOf<Int, Double>()
 
             weekLuxData.forEachIndexed { index, dayData ->
-                val dayIndex = index * 24 // Przykład, gdzie każdy dzień ma 24 pomiary
-                luxData[dayIndex] = dayData.second
+                luxData[index] = dayData.second
             }
 
             generalData.add(StatsViewModel.ChartsDataModel(
@@ -273,7 +269,11 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                     TimeRange.WEEK -> {
                         val now = LocalDateTime.now()
                         val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEE", Locale.getDefault())
-                        val measurementDateTime = now.minusDays(numberOfMeasurements.toLong() - value.toLong())
+
+                        // Zakładając, że wartość 'value' na osi X wynosi od 0 do 6 dla dni tygodnia
+                        val dayLabelIndex = (now.dayOfWeek.value - 1 - value.toInt() + 7) % 7 // Aby uniknąć ujemnych wartości i zacząć od bieżącego dnia
+                        val measurementDateTime = now.minusDays(dayLabelIndex.toLong())
+
                         measurementDateTime.format(dayOfWeekFormatter)
                     }
                     TimeRange.MONTH -> {
@@ -294,55 +294,46 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
 
         val preparedData = mutableListOf<Pair<String, Pair<Double, Double>>>()
 
-        val noonIndex = rawData.indexOfFirst {
-            val hourDifference = Duration.between(LocalDateTime.now().withHour(12), now).toHours()
-            it == rawData.getOrNull(rawData.size - hourDifference.toInt())
-        }
+        // Iterowanie wstecz od ostatniego dostępnego pomiaru przez 7 dni
+        for (dayBack in 0 until 7) {
+            val dayLabel = now.minusDays(dayBack.toLong()).format(dayOfWeekFormatter)
 
-        if (noonIndex != -1) {
-            for (i in noonIndex downTo 0 step 24) {
-                val dayLabel = now.minusDays((noonIndex - i) / 24L).format(dayOfWeekFormatter)
-                val humidityWk1 = rawData.getOrNull(i)?.humWk1_avg ?: 0.0
-                val humidityWk2 = rawData.getOrNull(i)?.humWk2_avg ?: 0.0
-                preparedData.add(0, Pair(dayLabel, Pair(humidityWk1, humidityWk2)))
-            }
-        }
+            // Oblicz średnie wartości dla każdego dnia
+            val startIndex = dayBack * 24 // Zakładając, że mamy jeden pomiar na godzinę
+            val endIndex = startIndex + 24
+            val dailyMeasurements = rawData.subList(startIndex.coerceIn(0, rawData.size), endIndex.coerceIn(0, rawData.size))
 
-        while (preparedData.size < 7) {
-            val dayLabel = now.minusDays(preparedData.size.toLong()).format(dayOfWeekFormatter)
-            preparedData.add(0, Pair(dayLabel, Pair(0.0, 0.0)))
+            val humidityWk1Avg = dailyMeasurements.mapNotNull { it.humWk1_avg }.average().takeIf { !it.isNaN() } ?: 0.0
+            val humidityWk2Avg = dailyMeasurements.mapNotNull { it.humWk2_avg }.average().takeIf { !it.isNaN() } ?: 0.0
+
+            preparedData.add(0, Pair(dayLabel, Pair(humidityWk1Avg, humidityWk2Avg)))
         }
 
         return preparedData
     }
 
-    fun prepareWeekLightxData(rawData: List<StatsViewModel.DataModel>): List<Pair<String, Pair<Double, Double>>> {
+    fun prepareWeekLightData(rawData: List<StatsViewModel.DataModel>): List<Pair<String, Pair<Double, Double>>> {
         val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEE", Locale.getDefault())
         val now = LocalDateTime.now(ZoneId.systemDefault())
 
         val preparedData = mutableListOf<Pair<String, Pair<Double, Double>>>()
 
-        val noonIndex = rawData.indexOfFirst {
-            val hourDifference = Duration.between(LocalDateTime.now().withHour(12), now).toHours()
-            it == rawData.getOrNull(rawData.size - hourDifference.toInt())
-        }
+        for (dayBack in 0 until 7) {
+            val dayLabel = now.minusDays(dayBack.toLong()).format(dayOfWeekFormatter)
 
-        if (noonIndex != -1) {
-            for (i in noonIndex downTo 0 step 24) {
-                val dayLabel = now.minusDays((noonIndex - i) / 24L).format(dayOfWeekFormatter)
-                val humidityWk1 = rawData.getOrNull(i)?.lightWk1_avg ?: 0.0
-                val humidityWk2 = rawData.getOrNull(i)?.lightWk2_avg ?: 0.0
-                preparedData.add(0, Pair(dayLabel, Pair(humidityWk1, humidityWk2)))
-            }
-        }
+            val startIndex = dayBack * 24
+            val endIndex = startIndex + 24
+            val dailyMeasurements = rawData.subList(startIndex.coerceIn(0, rawData.size), endIndex.coerceIn(0, rawData.size))
 
-        while (preparedData.size < 7) {
-            val dayLabel = now.minusDays(preparedData.size.toLong()).format(dayOfWeekFormatter)
-            preparedData.add(0, Pair(dayLabel, Pair(0.0, 0.0)))
+            val lightWk1Avg = dailyMeasurements.mapNotNull { it.lightWk1_avg }.average().takeIf { !it.isNaN() } ?: 0.0
+            val lightWk2Avg = dailyMeasurements.mapNotNull { it.lightWk2_avg }.average().takeIf { !it.isNaN() } ?: 0.0
+
+            preparedData.add(0, Pair(dayLabel, Pair(lightWk1Avg, lightWk2Avg)))
         }
 
         return preparedData
     }
+
 
     fun prepareWeekLuxData(rawData: List<StatsViewModel.DataModel>): List<Pair<String, Double>> {
         val dayOfWeekFormatter = DateTimeFormatter.ofPattern("EEE", Locale.getDefault())
@@ -350,24 +341,17 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
 
         val preparedData = mutableListOf<Pair<String, Double>>()
 
-        val noonIndex = rawData.indexOfFirst {
-            val hourDifference = Duration.between(LocalDateTime.now().withHour(12), now).toHours()
-            it == rawData.getOrNull(rawData.size - hourDifference.toInt())
-        }
+        for (dayBack in 0 until 7) {
+            val dayLabel = now.minusDays(dayBack.toLong()).format(dayOfWeekFormatter)
 
-        if (noonIndex != -1) {
-            for (i in noonIndex downTo 0 step 24) {
-                val dayLabel = now.minusDays((noonIndex - i) / 24L).format(dayOfWeekFormatter)
-                val lux_Avg = rawData.getOrNull(i)?.lux_avg ?: 0.0
-                preparedData.add(0, Pair(dayLabel, lux_Avg))
-            }
-        }
+            val startIndex = dayBack * 24
+            val endIndex = startIndex + 24
+            val dailyMeasurements = rawData.subList(startIndex.coerceIn(0, rawData.size), endIndex.coerceIn(0, rawData.size))
 
-        while (preparedData.size < 7) {
-            val dayLabel = now.minusDays(preparedData.size.toLong()).format(dayOfWeekFormatter)
-            preparedData.add(0, Pair(dayLabel, 0.0))
-        }
+            val lux_Avg = dailyMeasurements.mapNotNull { it.lux_avg }.average().takeIf { !it.isNaN() } ?: 0.0
 
+            preparedData.add(0, Pair(dayLabel, lux_Avg))
+        }
         return preparedData
     }
 
@@ -377,24 +361,17 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
 
         val preparedData = mutableListOf<Pair<String, Double>>()
 
-        val noonIndex = rawData.indexOfFirst {
-            val hourDifference = Duration.between(LocalDateTime.now().withHour(12), now).toHours()
-            it == rawData.getOrNull(rawData.size - hourDifference.toInt())
-        }
+        for (dayBack in 0 until 7) {
+            val dayLabel = now.minusDays(dayBack.toLong()).format(dayOfWeekFormatter)
 
-        if (noonIndex != -1) {
-            for (i in noonIndex downTo 0 step 24) {
-                val dayLabel = now.minusDays((noonIndex - i) / 24L).format(dayOfWeekFormatter)
-                val temp_Avg = rawData.getOrNull(i)?.temp_avg ?: 0.0
-                preparedData.add(0, Pair(dayLabel, temp_Avg))
-            }
-        }
+            val startIndex = dayBack * 24
+            val endIndex = startIndex + 24
+            val dailyMeasurements = rawData.subList(startIndex.coerceIn(0, rawData.size), endIndex.coerceIn(0, rawData.size))
 
-        while (preparedData.size < 7) {
-            val dayLabel = now.minusDays(preparedData.size.toLong()).format(dayOfWeekFormatter)
-            preparedData.add(0, Pair(dayLabel, 0.0))
-        }
+            val temp_Avg = dailyMeasurements.mapNotNull { it.temp_avg }.average().takeIf { !it.isNaN() } ?: 0.0
 
+            preparedData.add(0, Pair(dayLabel, temp_Avg))
+        }
         return preparedData
     }
 // TODO test above
