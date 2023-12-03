@@ -38,8 +38,6 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val settingsViewModel =
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -187,11 +185,11 @@ class SettingsFragment : Fragment() {
         popup.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.item_lang_pl -> {
-                    Toast.makeText(context, "Wybrano Polski", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Zatwierdzono", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.item_lang_eng -> {
-                    Toast.makeText(context, "Wybrano English", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Zmiana języka nie jest zaimplementowana", Toast.LENGTH_SHORT).show()
                     true
                 }
                 else -> false

@@ -37,9 +37,6 @@
 
         <item name="buttonColor">@color/button_dark</item> <!-- Kolor przyciskow -->
 
-        <!-- Dashboard -->
-
-
         <!-- Wykresy -->
         <item name="statsAxisColor">@color/white</item> <!-- Kolor osi wykresow -->
         <item name="statsTextColor">@color/white</item> <!-- Podpisy wartosci osi -->
@@ -49,10 +46,10 @@
     <style name="Theme_Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#4CAF50</item>
-        <item name="colorPrimaryVariant">@color/design_default_color_secondary_variant</item>
+        <item name="colorPrimaryVariant">#7dae81</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">#2c872f</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
 
@@ -64,9 +61,11 @@
         <item name="android:navigationBarColor">@color/dark_background</item> <!-- dolny pasek pod bottom nav -->
         <item name="android:windowBackground">@color/green_basic</item>  <!--Zmiana koloru tla!!! -->
         <!-- Customize your theme here. -->
-        <item name="customBackgroundColor">#B0E6B2</item> <!-- Kolor tla layoutow we fragmentach -->
+        <item name="customBackgroundColor">@color/green_basic_layouts</item> <!-- Kolor tla layoutow we fragmentach -->
         <item name="customBoardersOfLayouts">@color/boarders_of_layouts</item> <!-- Obramowki dla layoutow -->
         <item name="buttonColor">@color/button_light</item> <!-- Kolor przyciskow -->
+        <item name="titleColor">@color/green</item> <!-- Kolor tytulow w settings -->
+
 
         <!-- Wykresy -->
         <item name="statsAxisColor">@color/black</item> <!-- Kolor osi wykresow -->

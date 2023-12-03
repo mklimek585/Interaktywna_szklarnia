@@ -36,6 +36,7 @@
 
     <color name="boarders_of_layouts">#B1BCBE</color>
     <color name="button_light">#66AE69</color>
+    <color name="teal_up">#2A8180</color>
 
     <!-- For dark mode -->
     <color name="grey_basic">#DBF5DC</color> <!-- Based green for background -->

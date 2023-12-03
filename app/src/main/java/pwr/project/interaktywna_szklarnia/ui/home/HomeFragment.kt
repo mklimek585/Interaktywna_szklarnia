@@ -8,8 +8,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.NotificationCompat.getColor
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,14 +17,10 @@ import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import pwr.project.interaktywna_szklarnia.Measurement
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentHomeBinding
-import pwr.project.interaktywna_szklarnia.ui.dashboard.DashboardViewModel
-import pwr.project.interaktywna_szklarnia.ui.settings.SettingsViewModel
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import pwr.project.interaktywna_szklarnia.Workstation

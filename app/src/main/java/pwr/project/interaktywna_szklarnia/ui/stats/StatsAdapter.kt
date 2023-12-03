@@ -78,7 +78,7 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                     title = "Światło słoneczne",
                     label1 = "Natężenie światła - [lx]",
                     data1 = rawData.mapIndexed { index, data -> index to (data.lux_avg ?: 0.0) }.toMap(),
-                    color1 = Color.CYAN,
+                    color1 = Color.MAGENTA,
                     label2 = "Stanowisko 2",
                     data2 = rawData.mapIndexed { index, data -> index to (data.temp_avg ?: 0.0) }.toMap(),
                     color2 = Color.CYAN
@@ -95,7 +95,7 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                     humidityData2[index] = dayData.second.second
                 }
                 generalData.add(StatsViewModel.ChartsDataModel(
-                    title = "Wilgotność w tygodniu",
+                    title = "Wilgotność",
                     label1 = "Stanowisko 1 - [%]",
                     data1 = humidityData1,
                     color1 = Color.BLUE,
@@ -139,24 +139,24 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                     data2 = tempData,
                     color2 = Color.MAGENTA
                 ))
+
+                val weekLuxData = prepareWeekLuxData(rawData)
+                val luxData = mutableMapOf<Int, Double>()
+
+                weekLuxData.forEachIndexed { index, dayData ->
+                    luxData[index] = dayData.second
+                }
+
+                generalData.add(StatsViewModel.ChartsDataModel(
+                    title = "Światło słoneczne",
+                    label1 = "Natężenie światła - [lx]",
+                    data1 = luxData,
+                    color1 = Color.MAGENTA,
+                    label2 = "Natężenie światła - [lx]",
+                    data2 = luxData,
+                    color2 = Color.CYAN
+                ))
             }
-
-            val weekLuxData = prepareWeekLuxData(rawData)
-            val luxData = mutableMapOf<Int, Double>()
-
-            weekLuxData.forEachIndexed { index, dayData ->
-                luxData[index] = dayData.second
-            }
-
-            generalData.add(StatsViewModel.ChartsDataModel(
-                title = "Światło słoneczne",
-                label1 = "Natężenie światła - [lx]",
-                data1 = luxData,
-                color1 = Color.CYAN,
-                label2 = "Natężenie światła - [lx]",
-                data2 = luxData,
-                color2 = Color.CYAN
-            ))
 
             return generalData
         }

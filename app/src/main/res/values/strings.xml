@@ -1,20 +1,9 @@
 <resources>
     <string name="app_name">Interaktywna_szklarnia</string>
-    <string name="choose1">Home</string>
-    <string name="choose2">Sets</string>
-    <string name="choose3">Stats</string>
-    <string name="choose4">Settings</string>
-
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
+    <string name="choose1">Podgląd</string>
+    <string name="choose2">Sterowanie</string>
+    <string name="choose3">Statystyki</string>
+    <string name="choose4">Ustawienia</string>
 
     <string name="register"><u><b><i>Załóż konto</i></b></u></string>
     <string name="title_activity_settings">SettingsActivity</string>
