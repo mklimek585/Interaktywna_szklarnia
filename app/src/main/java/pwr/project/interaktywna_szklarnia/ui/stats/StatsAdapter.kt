@@ -13,7 +13,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import pwr.project.interaktywna_szklarnia.R
+import java.time.LocalDateTime
 import java.util.logging.Logger.global
 
 class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.DataModel>, private val timeRange: TimeRange
@@ -169,18 +172,51 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
         xAxis.axisLineWidth = 2f
         xAxis.setDrawGridLines(false)
 
-        when(timeRange) {
-            TimeRange.DAY -> {
-                // Formatuj oś X dla danych dziennych
-            }
-            TimeRange.WEEK -> {
-                // Formatuj oś X dla danych tygodniowych
-            }
-            TimeRange.MONTH -> {
-                // Formatuj oś X dla danych miesięcznych
+        xAxis.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return when (timeRange) {
+                    TimeRange.DAY -> {
+                        val labels = mutableListOf<String>()
+                        val now = LocalDateTime.now()
+                        var currentHour = now.hour
+
+                        // Tworzenie etykiet zaczynając od ostatniej pełnej godziny i idąc wstecz
+                        for (i in 0 until numberOfMeasurements) {
+                            var hourLabel = currentHour - i
+                            if (hourLabel <= 0) hourLabel += 24  // Korekta dla godzin mniejszych niż 0
+                            labels.add(0, "$hourLabel:00")  // Dodawanie etykiet w odwrotnej kolejności
+                        }
+
+                        labels.getOrElse(value.toInt()) { "" }
+                    }
+                    TimeRange.WEEK -> {
+                        val dayOfWeek = value.toInt() // Zakładając, że wartości X to dni tygodnia
+                        dayOfWeekToString(dayOfWeek)
+                    }
+                    TimeRange.MONTH -> {
+                        val dayOfMonth = value.toInt() // Zakładając, że wartości X to dni miesiąca
+                        dayOfMonth.toString()
+                    }
+                    else -> super.getFormattedValue(value)
+                }
             }
         }
+
     }
+
+    private fun dayOfWeekToString(day: Int): String {
+        return when (day) {
+            1 -> "Pon"
+            2 -> "Wt"
+            3 -> "Śr"
+            4 -> "Czw"
+            5 -> "Pt"
+            6 -> "Sob"
+            7 -> "Ndz"
+            else -> ""
+        }
+    }
+
 }
 
 enum class TimeRange {

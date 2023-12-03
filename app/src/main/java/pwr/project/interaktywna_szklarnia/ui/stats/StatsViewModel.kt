@@ -8,7 +8,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
@@ -25,7 +27,10 @@ class StatsViewModel : ViewModel() {
 
     fun loadDataForTimePeriod(callback: (ArrayList<DataModel>) -> Unit, timeRange: TimeRange) {
         val dataRef = databaseRef.child("Szklarnia/Statistics")
-        val endDate = LocalDateTime.now(ZoneOffset.UTC)
+        val now = LocalDateTime.now() // Użyj czasu lokalnego
+        val zoneId = ZoneId.systemDefault() // Pobierz strefę czasową systemu
+        val zonedDateTime = ZonedDateTime.of(now, zoneId) // Konwersja na ZonedDateTime
+        val endDate = zonedDateTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime() // Konwersja na czas UTC
         var days = 0
         Log.d("DataLog", "TimeRange: ${timeRange}")
         days = when(timeRange) {
