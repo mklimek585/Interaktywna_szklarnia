@@ -20,12 +20,10 @@ class StatsFragment : Fragment() {
 
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         val listView: ListView = binding.listView
 
-
         // Określ zakres czasowy
-        val timeRange = TimeRange.DAY // lub inny zakres, zależnie od potrzeb
+        val timeRange = TimeRange.WEEK // lub inny zakres, zależnie od potrzeb
 
         statsViewModel.loadDataForTimePeriod({ rawData, isDataUpToDate ->
             rawData.forEach { dataModel ->
@@ -49,6 +47,3 @@ class StatsFragment : Fragment() {
         _binding = null
     }
 }
-
-// TODO Zmiana 1-7 na dane dni tygodnia
-// TODO dodanie możliwości zmiany wyświetlania zakresy wykresu w ustaweiniach np z tygodnia na miesiac
