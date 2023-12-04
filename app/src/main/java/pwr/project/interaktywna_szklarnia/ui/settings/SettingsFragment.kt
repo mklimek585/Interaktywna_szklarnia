@@ -1,27 +1,18 @@
 package pwr.project.interaktywna_szklarnia.ui.settings
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.PopupMenu
-import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.core.app.ActivityCompat.recreate
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
 import pwr.project.interaktywna_szklarnia.LoginActivity
 import pwr.project.interaktywna_szklarnia.MainActivity
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentSettingsBinding
-import kotlin.math.log
 
 
 class SettingsFragment : Fragment() {
@@ -42,12 +33,6 @@ class SettingsFragment : Fragment() {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.buttonLogout.setOnClickListener { view -> logoutFun(view)}
-        binding.buttonLanguage.setOnClickListener { view -> chooseLanguage(view)}
-        binding.buttonDeleteAccount.setOnClickListener { view -> deleteAccount(view)}
-        binding.buttonTimeRange.setOnClickListener { view -> chooseRangeTime(view) }
-        initializeTimeRangeDisplay()
-
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(activity ?: throw IllegalStateException("Activity cannot be null"))
         val isDarkTheme = sharedPref.getBoolean("DARK_THEME", false)
 
@@ -59,6 +44,14 @@ class SettingsFragment : Fragment() {
             // Powiadom aktywność o zmianie motywu
             (activity as? MainActivity)?.changeTheme(isChecked)
         }
+
+        binding.buttonLogout.setOnClickListener { view -> logoutFun(view)}
+        binding.buttonLanguage.setOnClickListener { view -> chooseLanguage(view, isDarkTheme)}
+        binding.buttonDeleteAccount.setOnClickListener { view -> deleteAccount(view)}
+        binding.buttonTimeRange.setOnClickListener { view -> chooseRangeTime(view, isDarkTheme) }
+        initializeTimeRangeDisplay()
+
+
 
         // TODO popout activity o braku internetu
         // TODO opcja recznego wlaczania aktywow
@@ -137,11 +130,15 @@ class SettingsFragment : Fragment() {
     }
 
 
-    fun chooseRangeTime(view: View) {
+    fun chooseRangeTime(view: View, isDarkTheme: Boolean) {
         val sharedPref = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
         val currentRange = sharedPref?.getString(KEY_TIME_RANGE, DEFAULT_TIME_RANGE)
 
-        val popup = PopupMenu(context, view)
+        val popup: PopupMenu = if(isDarkTheme) {
+            PopupMenu(ContextThemeWrapper(context, R.style.CustomPopupMenu), view)
+        } else {
+            PopupMenu(context, view)
+        }
         popup.menuInflater.inflate(R.menu.settings_stats_menu, popup.menu)
 
         // Zaznacz aktualny zakres czasowy w menu
@@ -173,9 +170,13 @@ class SettingsFragment : Fragment() {
         popup.show()
     }
 
-    fun chooseLanguage(view: View) {
-        // Tworzenie nowego PopupMenu
-        val popup = PopupMenu(context, view)
+    fun chooseLanguage(view: View, isDarkTheme: Boolean) {
+        val popup: PopupMenu = if(isDarkTheme) {
+            PopupMenu(ContextThemeWrapper(context, R.style.CustomPopupMenu), view)
+        } else {
+            PopupMenu(context, view)
+        }
+
         // Inflating menu z pliku XML
         popup.menuInflater.inflate(R.menu.settings_menu, popup.menu)
 

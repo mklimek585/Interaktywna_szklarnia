@@ -381,9 +381,6 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
         }
         return preparedData
     }
-// TODO test above
-
-
     private fun dayOfWeekToString(day: Int): String {
         return when (day) {
             1 -> "Pon"

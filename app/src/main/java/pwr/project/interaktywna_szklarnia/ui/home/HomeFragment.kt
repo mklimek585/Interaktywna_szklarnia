@@ -211,7 +211,6 @@ class HomeFragment : Fragment() {
             } else {
                 lightMax = currentSet[1].toFloat()+200 }
             }
-        // TODO dla dwoch pozostalych
         // TODO konwersja jak jest np 750 to zeby rzucalo do 900 lub 1000
 
         barChartSun.axisLeft.axisMaximum = lightMax // maksimum osi Y

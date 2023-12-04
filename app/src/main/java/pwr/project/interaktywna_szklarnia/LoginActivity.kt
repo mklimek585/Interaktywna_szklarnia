@@ -73,13 +73,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun loginMainActivity(view: View) {
-        //TODO logowanie
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        this.finish()
-    }
-
     fun login(view: View) {
         Log.d(TAG, "Login button clicked")
         val email = binding.editTextEmail.text.toString()
