@@ -60,11 +60,8 @@ class SettingsFragment : Fragment() {
             (activity as? MainActivity)?.changeTheme(isChecked)
         }
 
-
-    // TODO kolory trybu ciemnego
-        // TODO part2 na ciemnym tle wyswietla sie bialy popout - moze to ktorys kolor i tekst jest na bialo xpp
-        // TODO mb feedback?
-        // TODO opcja recznego wlaczania actywow
+        // TODO popout activity o braku internetu
+        // TODO opcja recznego wlaczania aktywow
         return root
     }
 
@@ -86,7 +83,7 @@ class SettingsFragment : Fragment() {
         activity?.finish()
     }
 
-    fun deleteAccount(view: View) { // TODO usuwanie konta
+    fun deleteAccount(view: View) { // TODO zapytanie czy na pewno popup message
         Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -199,7 +196,4 @@ class SettingsFragment : Fragment() {
         // Wyświetlanie PopupMenu
         popup.show()
     }
-
-    // TODO popout menu
-    // TODO popout activity o braku internetu
 }

@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-<!--    <style name="Theme_Dark">2</style>-->
-
     <style name="Theme_Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Użyj kolorów, które są odpowiednie dla trybu ciemnego -->
-        <item name="colorPrimary">@color/dark_primary</item> <!-- Podswietlenie bottom nav bara -->
+        <item name="colorPrimary">@color/dark_onPrimary</item> <!-- Podswietlenie bottom nav bara -->
         <item name="colorPrimaryVariant">@color/dark_primaryDark</item> <!-- IDK -->
         <item name="colorOnPrimary">@color/dark_onPrimary</item> <!-- Kolor napisu w buttonie ale innych tekstow nie -->
 
-        <item name="colorSecondary">@color/dark_secondary</item> <!-- Podswietlenie radio button i switchy -->
+        <item name="colorSecondary">@color/teal_up</item> <!-- Podswietlenie radio button i switchy -->
         <item name="colorSecondaryVariant">@color/dark_secondaryDark</item> <!-- IDK -->
         <item name="colorOnSecondary">@color/dark_onSecondary</item> <!-- IDK -->
 
@@ -23,25 +20,27 @@
         <item name="colorOnError">@color/dark_onError</item>
 
         <!-- Ustawienia dla status bar, navigation bar, i innych systemowych komponentów -->
-        <item name="android:statusBarColor">@color/dark_primaryDark</item> <!-- Gorny pasek nad apka xpp -->
+        <item name="android:statusBarColor">@color/dark_1</item> <!-- Gorny pasek nad apka xpp -->
         <item name="android:navigationBarColor">@color/dark_background</item> <!-- dolny pasek pod bottom nav -->
-        <item name="android:windowBackground">@color/dark_3</item>  <!--Zmiana koloru tla!!! -->
+        <item name="android:windowBackground">@color/dark_1</item>  <!--Zmiana koloru tla!!! -->
 
         <!-- Ustawienia tekstu, ikon i innych elementów UI -->
         <item name="android:textColor">@color/dark_onBackground</item> <!-- Kolor textViews -->
         <item name="android:windowLightStatusBar">false</item> <!-- jasne ikony na status bar dla lepszej widoczności -->
 
         <!-- Ogole -->
-        <item name="customBackgroundColor">@color/dark_3</item> <!-- Kolor tla layoutow we fragmentach -->
-        <item name="customBoardersOfLayouts">@color/boarders_of_layouts_dark</item> <!-- Obramowki dla layoutow -->
+        <item name="customBackgroundColor">@color/grey_5</item> <!-- Kolor tla layoutow we fragmentach -->
+        <item name="customBoardersOfLayouts">@color/grey_3</item> <!-- Obramowki dla layoutow -->
 
-        <item name="buttonColor">@color/button_dark</item> <!-- Kolor przyciskow -->
+        <item name="buttonColor">@color/dark_3</item> <!-- Kolor przyciskow -->
+        <item name="buttonTextColor">@color/white</item> <!-- Kolor tekstow przyciskow w dashboradzie -->
 
         <!-- Wykresy -->
         <item name="statsAxisColor">@color/white</item> <!-- Kolor osi wykresow -->
         <item name="statsTextColor">@color/white</item> <!-- Podpisy wartosci osi -->
 
     </style>
+
 
     <style name="Theme_Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -64,8 +63,8 @@
         <item name="customBackgroundColor">@color/green_basic_layouts</item> <!-- Kolor tla layoutow we fragmentach -->
         <item name="customBoardersOfLayouts">@color/boarders_of_layouts</item> <!-- Obramowki dla layoutow -->
         <item name="buttonColor">@color/button_light</item> <!-- Kolor przyciskow -->
+        <item name="buttonTextColor">@color/black</item> <!-- Kolor tekstow przyciskow w dashboradzie -->
         <item name="titleColor">@color/green</item> <!-- Kolor tytulow w settings -->
-
 
         <!-- Wykresy -->
         <item name="statsAxisColor">@color/black</item> <!-- Kolor osi wykresow -->

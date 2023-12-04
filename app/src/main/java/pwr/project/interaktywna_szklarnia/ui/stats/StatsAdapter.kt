@@ -199,6 +199,7 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
         val legend = viewHolder.chart.legend
         legend.textColor = textColor
 
+
         if (dataModel != null) {
             val entries1 = ArrayList<Entry>()
             for ((x, y) in dataModel.data1) {
@@ -206,6 +207,9 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
             }
             val lineDataSet1 = LineDataSet(entries1, dataModel.label1)
             lineDataSet1.color = dataModel.color1
+            lineDataSet1.setCircleColor(dataModel.color1)
+            lineDataSet1.circleHoleColor = dataModel.color1
+            lineDataSet1.valueTextColor = textColor
             lineData.addDataSet(lineDataSet1)
 
             // Sprawdź tytuł wykresu, aby zdecydować, czy dodać drugi zestaw danych
@@ -216,6 +220,9 @@ class StatsAdapter(context: Context, private val rawData: List<StatsViewModel.Da
                 }
                 val lineDataSet2 = LineDataSet(entries2, dataModel.label2)
                 lineDataSet2.color = dataModel.color2
+                lineDataSet2.setCircleColor(dataModel.color2)
+                lineDataSet2.circleHoleColor = dataModel.color2
+                lineDataSet2.valueTextColor = textColor
                 lineData.addDataSet(lineDataSet2)
             }
         }

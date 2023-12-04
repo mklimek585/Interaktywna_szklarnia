@@ -272,7 +272,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
 
-                android:layout_marginTop="2dp"
                 android:text="Dzień"
                 android:textColor="#8C8C8C"
                 android:textSize="14sp"
@@ -331,7 +330,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
 
-                android:layout_marginTop="2dp"
                 android:text="Polski"
                 android:textColor="#8C8C8C"
                 android:textSize="14sp"
