@@ -41,6 +41,8 @@ class HomeFragment : Fragment() {
 
     private val barWidthValue = 0.6f
     private var lightMax = 1000f
+    private var lightMax2 = 1000f
+    private var lightMax3 = 1000f
     val decimalFormat = DecimalFormat("###'%'")
 
     val Sun = "#f4cb58"
@@ -192,26 +194,34 @@ class HomeFragment : Fragment() {
         barChartSun.data = barDataSUN
         barChartSun.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartSun.axisLeft.axisMinimum = 0f // minimum osi Y
-        //         && (currentSet[1].toFloat() < 300) {
-        if(values[1] in 1..299) {
+
+        if(values[1] in 0..299) {
             lightMax = 500f
         }
-        else if(values[1] in 301..599) {
+        else if(values[1] in 300..599) {
             lightMax = 800f
         }
-        else if(values[1] in 601..999) {
+        else if(values[1] in 600..999) {
             lightMax = 1200f
         }
-        else if(values[1] in 1001..1699) {
+        else if(values[1] in 1000..1699) {
             lightMax = 2000f
         }
+        else if(values[1] in 1700..2299) {
+            lightMax = 2600f
+        }
+        else if(values[1] in 2300..2999) {
+            lightMax = 3400f
+        }
+        else if(values[1] in 3000..4999) {
+            lightMax = 5000f
+        }
         if(currentSet[1].toFloat() > lightMax) {
-            if(currentSet[1].toFloat() >= 800) {
+            if(currentSet[1].toFloat() >= 500) {
 
             } else {
                 lightMax = currentSet[1].toFloat()+200 }
             }
-        // TODO konwersja jak jest np 750 to zeby rzucalo do 900 lub 1000
 
         barChartSun.axisLeft.axisMaximum = lightMax // maksimum osi Y
         barChartSun.axisLeft.valueFormatter = LuxFormatter() // formatowanie wartości osi Y
@@ -291,7 +301,7 @@ class HomeFragment : Fragment() {
         barChartWater2.invalidate() // Odśwież wykres
 
 ////////////////////////////////////////////////////////////////////////////
-        // TODO jak sa wieksze dane na wejsciu to sie nie buguje if dostosowujacy LightMax w zaleznosci od wartosci
+
         val entriesSUN2 = arrayListOf(BarEntry(1f, values[3].toFloat()))
         val dataSetSUN2 = BarDataSet(entriesSUN2, "")
         dataSetSUN2.setDrawValues(false)
@@ -303,7 +313,36 @@ class HomeFragment : Fragment() {
         barChartSun2.data = barDataSUN2
         barChartSun2.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartSun2.axisLeft.axisMinimum = 0f // minimum osi Y
-        barChartSun2.axisLeft.axisMaximum = lightMax // maksimum osi Y
+
+        if(values[3] in 1..299) {
+            lightMax2 = 500f
+        }
+        else if(values[3] in 301..599) {
+            lightMax2 = 800f
+        }
+        else if(values[3] in 601..999) {
+            lightMax2 = 1200f
+        }
+        else if(values[3] in 1001..1699) {
+            lightMax2 = 2000f
+        }
+        else if(values[3] in 1700..2299) {
+            lightMax2 = 2600f
+        }
+        else if(values[3] in 2300..2999) {
+            lightMax2 = 3400f
+        }
+        else if(values[3] in 3000..4999) {
+            lightMax2 = 5000f
+        }
+        if(currentSet[3].toFloat() > lightMax2) {
+            if(currentSet[3].toFloat() >= 500) {
+
+            } else {
+                lightMax2 = currentSet[3].toFloat()+200 }
+        }
+
+        barChartSun2.axisLeft.axisMaximum = lightMax2 // maksimum osi Y
         barChartSun2.axisLeft.valueFormatter = LuxFormatter() // formatowanie wartości osi Y
         // Settings
         barChartSun2.description.isEnabled = false
@@ -388,7 +427,36 @@ class HomeFragment : Fragment() {
         barChartSun3.data = barDataSUN3
         barChartSun3.axisLeft.axisLineWidth = 2f // pogrubienie osi Y
         barChartSun3.axisLeft.axisMinimum = 0f // minimum osi Y
-        barChartSun3.axisLeft.axisMaximum = lightMax // maksimum osi Y
+
+        if(values[4] in 1..299) {
+            lightMax3= 500f
+        }
+        else if(values[4] in 301..599) {
+            lightMax3 = 800f
+        }
+        else if(values[4] in 601..999) {
+            lightMax3 = 1200f
+        }
+        else if(values[4] in 1001..1699) {
+            lightMax3 = 2000f
+        }
+        else if(values[4] in 1700..2299) {
+            lightMax3 = 2600f
+        }
+        else if(values[4] in 2300..2999) {
+            lightMax3 = 3400f
+        }
+        else if(values[4] in 3000..4999) {
+            lightMax3 = 5000f
+        }
+        if(currentSet[4].toFloat() > lightMax3) {
+            if(currentSet[4].toFloat() >= 500) {
+
+            } else {
+                lightMax3 = currentSet[4].toFloat()+200 }
+        }
+
+        barChartSun3.axisLeft.axisMaximum = lightMax3 // maksimum osi Y
         barChartSun3.axisLeft.valueFormatter = LuxFormatter() // formatowanie wartości osi Y
         // Settings
         barChartSun3.description.isEnabled = false
