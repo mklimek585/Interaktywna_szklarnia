@@ -1,7 +1,6 @@
-package pwr.project.interaktywna_szklarnia
+package pwr.project.interaktywna_szklarnia.ui.auth
 
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,22 +8,14 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.graphics.drawable.DrawableCompat.applyTheme
 import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import pwr.project.interaktywna_szklarnia.MainActivity
+import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.ActivityLoginBinding
-
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
-import java.util.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 class LoginActivity : AppCompatActivity() {

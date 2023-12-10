@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
-import pwr.project.interaktywna_szklarnia.LoginActivity
+import pwr.project.interaktywna_szklarnia.ui.auth.LoginActivity
 import pwr.project.interaktywna_szklarnia.MainActivity
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentSettingsBinding
@@ -50,8 +50,6 @@ class SettingsFragment : Fragment() {
         binding.buttonDeleteAccount.setOnClickListener { view -> deleteAccount(view)}
         binding.buttonTimeRange.setOnClickListener { view -> chooseRangeTime(view, isDarkTheme) }
         initializeTimeRangeDisplay()
-
-
 
         // TODO popout activity o braku internetu
         // TODO opcja recznego wlaczania aktywow

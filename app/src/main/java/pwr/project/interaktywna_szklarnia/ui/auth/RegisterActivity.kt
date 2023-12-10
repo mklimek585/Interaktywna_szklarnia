@@ -1,4 +1,4 @@
-package pwr.project.interaktywna_szklarnia
+package pwr.project.interaktywna_szklarnia.ui.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import pwr.project.interaktywna_szklarnia.databinding.ActivityMainBinding
+import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.ActivityRegisterBinding
 
 

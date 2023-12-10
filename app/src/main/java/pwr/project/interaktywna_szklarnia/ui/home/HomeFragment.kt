@@ -18,12 +18,10 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import pwr.project.interaktywna_szklarnia.Measurement
 import pwr.project.interaktywna_szklarnia.R
 import pwr.project.interaktywna_szklarnia.databinding.FragmentHomeBinding
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import pwr.project.interaktywna_szklarnia.Workstation
 
 
 class HomeFragment : Fragment() {
@@ -99,7 +97,7 @@ class HomeFragment : Fragment() {
         viewModel.currentMes.observe(viewLifecycleOwner, Observer { json ->
             val gson = Gson()
             try {
-                val measurement = gson.fromJson(json, Measurement::class.java)
+                val measurement = gson.fromJson(json, HomeViewModel.Measurement::class.java)
                 values[4] = measurement.lux.toInt()
                 values[5] = measurement.temp.toInt()
                 Log.i(TAG, "General Temp: ${measurement.temp}, Lux: ${measurement.lux}")
@@ -111,7 +109,7 @@ class HomeFragment : Fragment() {
         viewModel.currentWk1Mes.observe(viewLifecycleOwner, Observer { json ->
             val gson = Gson()
             try {
-                val workstation1 = gson.fromJson(json, Workstation::class.java)
+                val workstation1 = gson.fromJson(json, HomeViewModel.Workstation::class.java)
                 values[0] = workstation1.Humidity.toInt()
                 values[1] = workstation1.Light.toInt()
                 Log.i(TAG, "Wk1 humidity: ${workstation1.Humidity}, Light: ${workstation1.Light}")
@@ -123,7 +121,7 @@ class HomeFragment : Fragment() {
         viewModel.currentWk2Mes.observe(viewLifecycleOwner, Observer { json ->
             val gson2 = Gson()
             try {
-                val workstation2 = gson2.fromJson(json, Workstation::class.java)
+                val workstation2 = gson2.fromJson(json, HomeViewModel.Workstation::class.java)
                 values[2] = workstation2.Humidity.toInt()
                 values[3] = workstation2.Light.toInt()
                 Log.i(TAG, "Wk2 humidity: ${workstation2.Humidity}, Light: ${workstation2.Light}")

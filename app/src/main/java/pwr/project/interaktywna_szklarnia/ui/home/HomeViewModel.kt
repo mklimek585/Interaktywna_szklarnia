@@ -28,6 +28,16 @@ class HomeViewModel : ViewModel() {
     private var currentWk1MeasurmentsListener: ValueEventListener? = null
     private var currentWk2MeasurmentsListener: ValueEventListener? = null
 
+    data class Measurement(
+        val temp: Float,
+        val lux: Float
+    )
+
+    data class Workstation(
+        val Humidity: Float,
+        val Light: Float
+    )
+
     init {
         setupCurrentThresholdListener()
         setupCurrentMeasurementsListener()
