@@ -24,48 +24,49 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         applyTheme()
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_register)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.btnRegister.setOnClickListener { view -> register(view)}
 
         auth = Firebase.auth
     }
-    // TODO logika przyjmowanych hasel, zgodnosc itd
+
     fun register(view: View) {
         val email = binding.editTextEmail.text.toString()
         val password = binding.editTextPassword.text.toString()
-        Log.d(TAG, "btn pressed")
+        val confirmPassword = binding.editTextPassword2.text.toString()
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Rejestracja powiodła się, możesz zaktualizować UI
-                        Log.d(TAG, "createUserWithEmail:success")
-                        val user = auth.currentUser
-                        updateUI(user)
-                    } else {
-                        // Jeśli rejestracja się nie powiedzie, wyświetl komunikat
-                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                        Toast.makeText(baseContext, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
-                        updateUI(null)
-                    }
-                }
-        } else {
-            Toast.makeText(this, "Please enter email and password.", Toast.LENGTH_SHORT).show()
-        }
+            if (password.length >= 8) {
+                if(password == confirmPassword) {
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                Log.d(TAG, "createUserWithEmail:success")
+                                val user = auth.currentUser
+                                updateUI(user)
+                            } else {
+                                Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                                Toast.makeText(baseContext, "Podczas tworzenia konta wystąpił błąd",
+                                    Toast.LENGTH_SHORT).show()
+                                updateUI(null)
+                            }
+                        }
+                } else { Toast.makeText(this, "Podane hasła się różnią",
+                        Toast.LENGTH_SHORT).show() }
+            } else { Toast.makeText(this, "Hasło musi składać się z conajmniej 8 znaków",
+                Toast.LENGTH_LONG).show() }
+        } else { Toast.makeText(this, "Pole email i/lub hasło są puste",
+            Toast.LENGTH_SHORT).show() }
     }
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            // Użytkownik jest zarejestrowany, możesz na przykład przekierować do LoginActivity
+            // Użytkownik jest zarejestrowany i przekierowany do LoginActivity
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
-
 
     private fun applyTheme() {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(this)

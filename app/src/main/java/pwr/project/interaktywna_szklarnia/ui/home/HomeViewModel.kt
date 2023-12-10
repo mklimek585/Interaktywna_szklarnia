@@ -72,25 +72,21 @@ class HomeViewModel : ViewModel() {
     }
 
     fun loadSet(setNumber: String, callback: DataCallback) {
-        val key = if (setNumber == "4") "Custom" else setNumber
-        val setRef = databaseRef.child("Szklarnia/Threshold sets").child(key)
+        val setRef = databaseRef.child("Szklarnia/Threshold sets").child(setNumber)
 
         setRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val setValues = dataSnapshot.children.mapNotNull { paramSnapshot ->
-                    val value = paramSnapshot.value
-                    when (value) {
+                    when (val value = paramSnapshot.value) {
                         is Long -> value.toInt()
-                        is String -> value.toIntOrNull() ?: 0
                         else -> 0
                     }
                 }.toTypedArray()
-
                 callback.onDataLoaded(setValues)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle error
+                Log.e(TAG, "loadSet error: $databaseError")
             }
         })
     }
@@ -110,7 +106,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Obsługa błędu
+                Log.e(TAG, "General Measurement error: $databaseError")
             }
         }
 
@@ -124,7 +120,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Obsługa błędu
+                Log.e(TAG, "Workstation 1 Measurement error: $databaseError")
             }
         }
 
@@ -138,7 +134,7 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Obsługa błędu
+                Log.e(TAG, "Workstation 2 Measurement error: $databaseError")
             }
         }
 

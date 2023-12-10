@@ -16,9 +16,9 @@
         android:textColor="#DA1414"
         android:textSize="16sp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPassword2"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword2" />
+        app:layout_constraintEnd_toEndOf="@+id/editTextPassword2"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword2" />
 
     <Button
         android:id="@+id/btnRegister"
@@ -91,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
     <EditText
-        android:id="@+id/editTextTextPassword2"
+        android:id="@+id/editTextPassword2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -102,8 +102,8 @@
         android:paddingStart="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textColorHint="?attr/buttonTextColor"
         android:textColor="?attr/buttonTextColor"
+        android:textColorHint="?attr/buttonTextColor"
         app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
         app:layout_constraintStart_toStartOf="@+id/editTextPassword"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />

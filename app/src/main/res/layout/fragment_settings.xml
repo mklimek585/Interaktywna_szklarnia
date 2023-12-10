@@ -156,6 +156,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/settings_bg"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -199,7 +200,7 @@
             android:background="@drawable/settings_bg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout6">
 
             <TextView
                 android:id="@+id/tvDarkmode"
@@ -241,7 +242,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
             <ImageView
                 android:id="@+id/iconTimeRange"
@@ -309,6 +310,7 @@
             android:id="@+id/constraintLayout8"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:visibility="gone"
             android:background="@drawable/settings_bg"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 

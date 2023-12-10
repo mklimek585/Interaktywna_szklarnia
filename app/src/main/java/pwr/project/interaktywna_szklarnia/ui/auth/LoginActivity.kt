@@ -21,7 +21,6 @@ import pwr.project.interaktywna_szklarnia.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth;
-
     private val TAG = "LoginActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,17 +35,21 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener { view -> login(view) }
     }
 
+
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         updateUI(currentUser)
+    } // Jezeli uzytkownik jest zalogowany, zostanie przeniesiony do głównej części programu
+
+    private fun updateUI(currentUser: FirebaseUser?) {
+        if (currentUser != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     private fun setupRegisterLink(view: View?) {
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         val tvRegister : TextView = binding.tvRegisterLink
         tvRegister.setOnClickListener() {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -54,18 +57,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUI(currentUser: FirebaseUser?) {
-        if (currentUser != null) {
-            // Przejdź do MainActivity
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
-            // Użytkownik jest wylogowany, pozostaw użytkownika w LoginActivity
-        }
-    }
-
     fun login(view: View) {
-        Log.d(TAG, "Login button clicked")
         val email = binding.editTextEmail.text.toString()
         val password = binding.editTextPassword.text.toString()
 
@@ -73,24 +65,18 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithEmail:success")
                         val user = auth.currentUser
                         updateUI(user)
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmail:failure", task.exception)
                         updateUI(null)
-                        // Pokaż komunikat o błędzie.
-                        // Możesz na przykład wyświetlić Toast:
-                        Toast.makeText(baseContext, "Authentication failed.",
+                        Toast.makeText(baseContext, "Błedny login lub/i hasło.",
                             Toast.LENGTH_SHORT).show()
                     }
                 }
-        } else {
-            // Inform the user they must fill both the email and password fields
-            Toast.makeText(this, "Please enter email and password.", Toast.LENGTH_SHORT).show()
-        }
+        } else { Toast.makeText(this, "Pole email lub/i hasło są puste",
+            Toast.LENGTH_SHORT).show() }
     }
 
 
