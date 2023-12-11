@@ -72,13 +72,16 @@ class HomeViewModel : ViewModel() {
     }
 
     fun loadSet(setNumber: String, callback: DataCallback) {
-        val setRef = databaseRef.child("Szklarnia/Threshold sets").child(setNumber)
+        val key = if (setNumber == "4") "Custom" else setNumber
+        val setRef = databaseRef.child("Szklarnia/Threshold sets").child(key)
 
         setRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val setValues = dataSnapshot.children.mapNotNull { paramSnapshot ->
-                    when (val value = paramSnapshot.value) {
+                    val value = paramSnapshot.value
+                    when (value) {
                         is Long -> value.toInt()
+                        is String -> value.toIntOrNull() ?: 0
                         else -> 0
                     }
                 }.toTypedArray()
